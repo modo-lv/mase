@@ -1,0 +1,4 @@
+build/
+jte-classes/
+.gradle/
+.idea/
