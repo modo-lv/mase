@@ -29,6 +29,8 @@ repositories {
 }
 
 dependencies {
+    implementation("org.kotlincrypto.endians:endians:0.3.1")
+    implementation("commons-io:commons-io:2.17.0")
     testImplementation(kotlin("test"))
 }
 
