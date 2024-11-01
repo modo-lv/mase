@@ -1,0 +1,7 @@
+#checksumTable .table-cell {
+    -fx-font-family: monospace
+}
+
+#computed.table-cell.mismatched {
+    -fx-font-weight: bold
+}

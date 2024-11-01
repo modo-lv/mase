@@ -28,6 +28,8 @@ class Checksum(val segment: IntRange, val xorValue: UInt) {
      */
     var storedHash by notNull<UInt>()
 
+    fun isMismatched() = computedHash != storedHash
+
     /**
      * Computes the CRC hash for the segment of data covered by this checksum,
      * and stored the result in [computedHash].

@@ -10,7 +10,9 @@ class Main : Application() {
     override fun start(stage: Stage) {
         val vbox = FXMLLoader().run {
             location = javaClass.getResource("/gui/main.fxml")
-            load<VBox>()
+            load<VBox>().apply {
+                stylesheets.add("/gui/style.css")
+            }
         }
 
         stage.apply {
