@@ -1,5 +1,5 @@
 #checksumTable .table-cell {
-    -fx-font-family: monospace
+    -fx-font-family: 'Consolas', monospace
 }
 
 #computed.table-cell.mismatched {

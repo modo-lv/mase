@@ -1,6 +1,8 @@
 package structure
 
 import io.github.oshai.kotlinlogging.KotlinLogging
+import javafx.beans.property.SimpleIntegerProperty
+import javafx.beans.property.SimpleObjectProperty
 import utils.leInt
 import utils.leUInt
 import utils.toHex
@@ -19,14 +21,22 @@ class Checksum(val segment: IntRange, val xorValue: UInt) {
      *
      * Trying to read this before calling [compute] at least once will throw an exception (see [notNull]).
      */
-    var computedHash by notNull<UInt>()
+    var _computedHash = SimpleObjectProperty<UInt>(null)
+    var computedHash: UInt
+        get() = _computedHash.get()
+        set(value) { _computedHash.set(value) }
+    val computedHashProperty get() = _computedHash
 
     /**
      * Checksum hash stored in the file, set during [compute].
      *
      * Trying to read this before calling [compute] at least once will throw an exception (see [notNull]).
      */
-    var storedHash by notNull<UInt>()
+    private var _storedHash = SimpleObjectProperty<UInt>(null)
+    var storedHash: UInt
+        get() = _storedHash.get()
+        set(value) { _storedHash.set(value) }
+    val storedHashProperty get() = _storedHash
 
     fun isMismatched() = computedHash != storedHash
 

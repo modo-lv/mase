@@ -7,10 +7,7 @@ import javafx.collections.ObservableList
 import org.kotlincrypto.endians.LittleEndian.Companion.toLittleEndian
 import player.Location
 import player.PlayerLocation.Companion.readPlayer
-import utils.leInt
-import utils.leULong
-import utils.writeLeUInt
-import utils.writeLeULong
+import utils.*
 
 typealias SectionMap = MutableMap<Section, MutableList<Int>>
 
@@ -18,7 +15,6 @@ open class SaveData(val data: ByteArray) {
     private val logger = KotlinLogging.logger { }
 
     val sections: SectionMap = mutableMapOf()
-    val checksums: ObservableList<Checksum> = FXCollections.observableArrayList()
 
     fun read() {
         readSections()
@@ -33,13 +29,13 @@ open class SaveData(val data: ByteArray) {
     }
 
     fun updateXp(newXp: ULong) {
-        logger.trace { "Updating XP to ${newXp}..." }
+        logger.debug { "Updating XP to ${newXp}..." }
         val xpAddr = 0x003EE222
         data.writeLeULong(newXp, xpAddr)
     }
 
     fun fixChecksums() {
-        this.checksums.forEach {
+        Model.checksums.forEach {
             if (it.isMismatched()) {
                 logger.info { "Checksum [${it.segment}] is mismatched, updating..." }
                 val pos = it.segment.last + 1
@@ -59,13 +55,13 @@ open class SaveData(val data: ByteArray) {
     }
 
     fun readChecksums() {
-        if (this.checksums.isEmpty()) {
+        if (Model.checksums.isEmpty()) {
             logger.warn { "structure.Section data missing, reading that first." }
             readSections()
         }
         logger.info { "Reading checksums..." }
-        checksums.clear()
-        checksums.addAll(
+        Model.checksums.clear()
+        Model.checksums.addAll(
             Checksum(
                 0 ..< sections[Section.GIVD]!!.single() - Checksum.CHECKSUM_SIZE,
                 xorValue = 0xAEF0FFA0u
@@ -78,7 +74,7 @@ open class SaveData(val data: ByteArray) {
 
         readLevelChecksums()
 
-        checksums.addAll(
+        Model.checksums.addAll(
             Checksum(
                 data.size - Checksum.CHECKSUM_SIZE * 2,
                 xorValue = 0x05afc241u
@@ -112,7 +108,7 @@ open class SaveData(val data: ByteArray) {
                     val address = levelMapAddresses[levelMapIndex]
                     levelMapIndex++
                     if (firstLevelSkipped) {
-                        checksums.addLast(
+                        Model.checksums.addLast(
                             Checksum(
                                 segment = levelChecksumStart ..< address - Checksum.CHECKSUM_SIZE,
                                 xorValue = xorValue
@@ -126,7 +122,7 @@ open class SaveData(val data: ByteArray) {
                 }
             }
         }
-        checksums.addLast(
+        Model.checksums.addLast(
             Checksum(
                 segment = levelChecksumStart ..< data.size - (Checksum.CHECKSUM_SIZE * 3),
                 xorValue = xorValue,
@@ -139,13 +135,13 @@ open class SaveData(val data: ByteArray) {
     }
 
     fun computeChecksums() {
-        if (this.checksums.isEmpty()) {
+        if (Model.checksums.isEmpty()) {
             logger.warn { "Checksum data missing, reading that first." }
             readChecksums()
         }
         var hash = 0xFFFFFFFFu
-        checksums.forEach { checksum ->
-            hash = checksum.compute(hash, data, checksum == checksums.last())
+        Model.checksums.forEach { checksum ->
+            hash = checksum.compute(hash, data, checksum == Model.checksums.last())
         }
     }
 
