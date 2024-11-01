@@ -1,3 +1,4 @@
+import gui.tabs.Model
 import io.github.oshai.kotlinlogging.KotlinLogging
 import javafx.application.Application
 import javafx.fxml.FXMLLoader
@@ -42,5 +43,6 @@ class Main : Application() {
 fun main(vararg args: String) {
     //println(System.getProperty("sun.arch.data.model"))
     Main.Save = SaveFile(file = File(args[0])).apply { read() }
+    Model.initialize()
     Application.launch(Main::class.java, *args)
 }

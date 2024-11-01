@@ -11,8 +11,7 @@ open class ChecksumController {
     @FXML private lateinit var computed: TableColumn<Any, Any>
     @FXML private lateinit var checksumTable: TableView<Any>
 
-    @FXML
-    protected fun refresh(event: Event) {
+    @FXML fun initialize() {
         computed.setCellFactory {
             object : TableCell<Any, Any>() {
                 override fun updateItem(item: Any?, empty: Boolean) {
@@ -24,13 +23,16 @@ open class ChecksumController {
                     this.text = checksum.computedHash.toHex()
                     if (checksum.isMismatched())
                         this.styleClass.add("mismatched")
+                    else
+                        this.styleClass.remove("mismatched")
                 }
             }
         }
+    }
 
+    @FXML protected fun refresh(event: Event) {
         checksumTable.items.clear()
         Main.Save.computeChecksums()
-
         val items = Main.Save.checksums.mapIndexed { index, checksum ->
             mapOf(
                 "index" to index,

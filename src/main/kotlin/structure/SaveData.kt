@@ -1,5 +1,6 @@
 package structure
 
+import gui.tabs.Model
 import io.github.oshai.kotlinlogging.KotlinLogging
 import javafx.collections.FXCollections
 import javafx.collections.ObservableList
@@ -18,7 +19,6 @@ open class SaveData(val data: ByteArray) {
 
     val sections: SectionMap = mutableMapOf()
     val checksums: ObservableList<Checksum> = FXCollections.observableArrayList()
-    var xp: ULong = 0u
 
     fun read() {
         readSections()
@@ -29,10 +29,11 @@ open class SaveData(val data: ByteArray) {
 
     fun readPlayer() {
         val xpAddr = 0x003EE222
-        xp = data.leULong(xpAddr)
+        Model.xpProperty.value = data.leULong(xpAddr).toDouble()
     }
 
     fun updateXp(newXp: ULong) {
+        logger.trace { "Updating XP to ${newXp}..." }
         val xpAddr = 0x003EE222
         data.writeLeULong(newXp, xpAddr)
     }

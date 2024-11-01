@@ -7,7 +7,6 @@
      fx:controller="gui.tabs.StatController"
      closable="false"
      text="Character"
-     onSelectionChanged="#refresh"
 >
   <VBox VBox.vgrow="ALWAYS">
     <Label>XP:</Label>
