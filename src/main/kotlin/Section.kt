@@ -4,7 +4,7 @@
  */
 enum class Section(
     val version: Int = 0x01,
-    val count: Int = 1,
+    val count: Int? = 1, // null means unknown count, try to read all there are
     val size: Int? = null,
 ) {
     ADOM(version = 2),
@@ -30,7 +30,7 @@ enum class Section(
     WPNS(count = 19), // 10 melee + 8 ranged + 1 shield
     GHNT,
     ALVL,
-    LVMP(version = 2),
+    LVMP(version = 2, count = null),
 
     ;
 

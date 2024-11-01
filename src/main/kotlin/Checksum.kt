@@ -3,6 +3,8 @@
  */
 class Checksum(val data: IntRange, val xorValue: UInt) {
 
+    constructor(address: Int, xorValue: UInt) : this(address ..< address, xorValue)
+
     companion object {
         const val CHECKSUM_SIZE = 20 // Checksum and its 4 derivatives take 20 bytes
 

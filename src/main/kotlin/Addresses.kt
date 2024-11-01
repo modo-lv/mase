@@ -19,4 +19,14 @@ object Addresses {
      * Caverns of Chaos is a special case, see [LOCATION] for details.
      */
     const val LOCATION_LEVEL = 43
+
+
+    /**
+     * Starting address for reading location visitation flags.
+     *
+     *
+     * The actual data for each location is 400 bytes of other stuff,
+     * followed by 100 integers, one for each possible level.
+     */
+    const val LOCATION_VISITED_FLAGS_BASE = 4080045
 }
