@@ -1,12 +1,53 @@
-/**
- * @param data Address space containing the data to calculate this checksum for.
- */
-class Checksum(val data: IntRange, val xorValue: UInt) {
+import io.github.oshai.kotlinlogging.KotlinLogging
+import kotlin.properties.Delegates
 
+private val logger = KotlinLogging.logger { }
+
+/**
+ * @param segment Address space containing the data to calculate this checksum for.
+ */
+class Checksum(val segment: IntRange, val xorValue: UInt) {
     constructor(address: Int, xorValue: UInt) : this(address ..< address, xorValue)
 
+    /**
+     * Stored result of the last [compute] call.
+     *
+     * Trying to read this before calling [compute] will throw an exception (see [notNull]).
+     */
+    var computed by Delegates.notNull<UInt>()
+
+    /**
+     * Computes the CRC hash for the segment of data covered by this checksum,
+     * and stored the result in [computed].
+     *
+     * @param lastHash Checksum hash from previous computation. 0xFFFFFFFF for the first checksum.
+     * @param saveData Save data for which the checksum is being computed.
+     * @param isLast The last checksum in the file needs to get inverted.
+     */
+    fun compute(lastHash: UInt, saveData: ByteArray, isLast: Boolean = false): UInt {
+        var hash = lastHash
+        for (address in this.segment) {
+            val crcIndex = saveData[address].toUByte().toUInt().xor(hash).toUByte().toInt()
+            hash = hash.shr(8).xor(CRC32_TABLE[crcIndex])
+        }
+        hash = hash.xor(this.xorValue)
+
+        // Last checksum needs to be flipped
+        if (isLast)
+            hash = hash.inv()
+
+        val fileHash = saveData.leInt((this.segment.last + 1) + 16)
+        computed = hash
+        logger.info { "Computed hash for ${this.segment} is ${hash.toHex()}, file: ${fileHash.toHex()}" }
+
+        if (!isLast)
+            hash = hash.xor(this.xorValue)
+
+        return hash
+    }
+
     companion object {
-        const val CHECKSUM_SIZE = 20 // Checksum and its 4 derivatives take 20 bytes
+        const val CHECKSUM_SIZE = 20 // checksum.Checksum and its 4 derivatives take 20 bytes
 
         /**
          * Pre-computed CRC32 checksums of every possible byte value (0-255).

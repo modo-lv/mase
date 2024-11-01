@@ -1,4 +1,3 @@
-import io.github.oshai.kotlinlogging.KotlinLogging
 import javafx.application.Application
 import javafx.scene.Parent
 import javafx.scene.Scene
@@ -40,7 +39,5 @@ fun main(vararg args: String) {
     //println(System.getProperty("sun.arch.data.model"))
     //Application.launch(MainApp::class.java, *args)
     val file = File(args[0])
-    Save(file = file).also {
-        it.read()
-    }
+    SaveFile(file = file).read()
 }

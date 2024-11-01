@@ -1,4 +1,10 @@
+@file:OptIn(ExperimentalStdlibApi::class)
+
 import org.kotlincrypto.endians.LittleEndian
+
+fun Int.toHex() = "0x${this.toHexString(HexFormat.UpperCase)}"
+fun UInt.toHex() = "0x${this.toHexString(HexFormat.UpperCase)}"
+
 
 /**
  * Read 4 bytes from a byte array in little-endian order and convert to an [Int].
