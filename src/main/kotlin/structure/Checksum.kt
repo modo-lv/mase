@@ -2,8 +2,9 @@ package structure
 
 import io.github.oshai.kotlinlogging.KotlinLogging
 import utils.leInt
+import utils.leUInt
 import utils.toHex
-import kotlin.properties.Delegates
+import kotlin.properties.Delegates.notNull
 
 /**
  * @param segment Address space containing the data to calculate this checksum for.
@@ -16,13 +17,20 @@ class Checksum(val segment: IntRange, val xorValue: UInt) {
     /**
      * Stored result of the last [compute] call.
      *
-     * Trying to read this before calling [compute] will throw an exception (see [notNull]).
+     * Trying to read this before calling [compute] at least once will throw an exception (see [notNull]).
      */
-    var computed by Delegates.notNull<UInt>()
+    var computedHash by notNull<UInt>()
+
+    /**
+     * Checksum hash stored in the file, set during [compute].
+     *
+     * Trying to read this before calling [compute] at least once will throw an exception (see [notNull]).
+     */
+    var storedHash by notNull<UInt>()
 
     /**
      * Computes the CRC hash for the segment of data covered by this checksum,
-     * and stored the result in [computed].
+     * and stored the result in [computedHash].
      *
      * @param lastHash Checksum hash from previous computation. 0xFFFFFFFF for the first checksum.
      * @param saveData Save data for which the checksum is being computed.
@@ -40,9 +48,9 @@ class Checksum(val segment: IntRange, val xorValue: UInt) {
         if (isLast)
             hash = hash.inv()
 
-        val fileHash = saveData.leInt((this.segment.last + 1) + 16)
-        computed = hash
-        logger.info { "Computed hash for ${this.segment} is ${hash.toHex()}, file: ${fileHash.toHex()}" }
+        computedHash = hash
+        storedHash = saveData.leUInt((this.segment.last + 1) + 16)
+        logger.info { "Computed hash for ${this.segment} is ${hash.toHex()}, file: ${storedHash.toHex()}" }
 
         if (!isLast)
             hash = hash.xor(this.xorValue)

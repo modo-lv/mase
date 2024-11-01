@@ -49,7 +49,7 @@ dependencies {
 
 javafx {
     version = "23.0.1"
-    modules = listOf("javafx.controls")
+    modules = listOf("javafx.controls", "javafx.fxml")
 }
 
 kotlin {

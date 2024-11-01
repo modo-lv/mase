@@ -1,44 +1,31 @@
+import gui.checksums.ChecksumController
 import javafx.application.Application
-import javafx.scene.Parent
+import javafx.fxml.FXMLLoader
 import javafx.scene.Scene
-import javafx.scene.control.Alert
-import javafx.scene.control.Button
 import javafx.scene.layout.VBox
-import javafx.scene.text.Text
-import javafx.stage.FileChooser
 import javafx.stage.Stage
 import structure.SaveFile
 import java.io.File
 
-class MainApp : Application() {
-    private fun createContent(stage: Stage): Parent =
-        VBox(
-            Button("Open").apply {
-                setOnMouseClicked {
-                    FileChooser().run {
-                        initialDirectory = File("c:\\users\\martin\\Documents\\ADOM\\adom_steam\\savedg")
-                        showOpenDialog(stage)
-                    }?.also {
-                        Alert(Alert.AlertType.INFORMATION, it.absolutePath).apply {
-                            headerText = "File path"
-                            showAndWait()
-                        }
-                    }
-                }
-            },
-            Text("structure.Checksum: ???"),
-            Text("File: ${parameters.unnamed[0]}")
-        )
-
+class Main : Application() {
     override fun start(stage: Stage) {
-        stage.scene = Scene(createContent(stage), 600.0, 300.0)
-        stage.show()
+        val vbox = FXMLLoader().load<VBox>(javaClass.getResourceAsStream("/gui/Main.fxml"))
+
+        stage.apply {
+            scene = Scene(vbox)
+            minHeight = 500.0
+            minWidth = 600.0
+            show()
+        }
+    }
+
+    companion object {
+        lateinit var Save: SaveFile
     }
 }
 
 fun main(vararg args: String) {
     //println(System.getProperty("sun.arch.data.model"))
-    //Application.launch(MainApp::class.java, *args)
-    val file = File(args[0])
-    SaveFile(file = file).read()
+    Main.Save = SaveFile(file = File(args[0])).apply { read() }
+    Application.launch(Main::class.java, *args)
 }
