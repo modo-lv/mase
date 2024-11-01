@@ -1,13 +1,17 @@
-import Checksum.Companion.CHECKSUM_SIZE
-import Player.Companion.readPlayer
+package structure
+
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.kotlincrypto.endians.LittleEndian.Companion.toLittleEndian
+import player.Location
+import player.PlayerLocation.Companion.readPlayer
+import utils.addAll
+import utils.leInt
 
 typealias SectionMap = MutableMap<Section, MutableList<Int>>
 
-private val logger = KotlinLogging.logger { }
-
 open class SaveData(val data: ByteArray) {
+    private val logger = KotlinLogging.logger { }
+
     val sections: SectionMap = mutableMapOf()
     val checksums = mutableListOf<Checksum>()
 
@@ -19,17 +23,17 @@ open class SaveData(val data: ByteArray) {
 
     fun readChecksums() {
         if (this.checksums.isEmpty()) {
-            logger.warn { "Section data missing, reading that first." }
+            logger.warn { "structure.Section data missing, reading that first." }
             readSections()
         }
         logger.info { "Reading checksums..." }
         checksums.addAll(
             Checksum(
-                0 ..< sections[Section.GIVD]!!.single() - CHECKSUM_SIZE,
+                0 ..< sections[Section.GIVD]!!.single() - Checksum.CHECKSUM_SIZE,
                 xorValue = 0xAEF0FFA0u
             ),
             Checksum(
-                sections[Section.GIVD]!!.single() ..< sections[Section.GMTP]!!.single() - CHECKSUM_SIZE,
+                sections[Section.GIVD]!!.single() ..< sections[Section.GMTP]!!.single() - Checksum.CHECKSUM_SIZE,
                 xorValue = 0x12345678u
             )
         )
@@ -38,11 +42,11 @@ open class SaveData(val data: ByteArray) {
 
         checksums.addAll(
             Checksum(
-                data.size - CHECKSUM_SIZE * 2,
+                data.size - Checksum.CHECKSUM_SIZE * 2,
                 xorValue = 0x05afc241u
             ),
             Checksum(
-                data.size - CHECKSUM_SIZE,
+                data.size - Checksum.CHECKSUM_SIZE,
                 xorValue = 0u
             )
         )
@@ -59,7 +63,7 @@ open class SaveData(val data: ByteArray) {
         for (location in 1 ..< 51) { // Last checksum is added manually
             for (level in 0 ..< 100) {
                 val visited =
-                    data.leInt(Addresses.LOCATION_VISITED_FLAGS_BASE + (400 * location) + (level * 4)) != 0
+                    data.leInt(Location.Addresses.LOCATION_VISITED_FLAGS_BASE + (400 * location) + (level * 4)) != 0
                 val type = data.leInt(levelInfoAddress[location * 100 + level] + Section.HEADER_SIZE)
                 //println("Level type for [${loc}:${level}] = 0x${levelType.toHexString(HexFormat.UpperCase)}")
                 if (visited || (
@@ -72,7 +76,7 @@ open class SaveData(val data: ByteArray) {
                     if (firstLevelSkipped) {
                         checksums.addLast(
                             Checksum(
-                                segment = levelChecksumStart ..< address - CHECKSUM_SIZE,
+                                segment = levelChecksumStart ..< address - Checksum.CHECKSUM_SIZE,
                                 xorValue = xorValue
                             )
                         )
@@ -86,7 +90,7 @@ open class SaveData(val data: ByteArray) {
         }
         checksums.addLast(
             Checksum(
-                segment = levelChecksumStart ..< data.size - (CHECKSUM_SIZE * 3),
+                segment = levelChecksumStart ..< data.size - (Checksum.CHECKSUM_SIZE * 3),
                 xorValue = xorValue,
             )
         )
@@ -98,7 +102,7 @@ open class SaveData(val data: ByteArray) {
 
     fun computeChecksums() {
         if (this.checksums.isEmpty()) {
-            logger.warn { "Checksum data missing, reading that first." }
+            logger.warn { "structure.Checksum data missing, reading that first." }
             readChecksums()
         }
         var hash = 0xFFFFFFFFu
@@ -113,7 +117,7 @@ open class SaveData(val data: ByteArray) {
         var readPosition = 0
         sections.clear()
         for (section in Section.entries) {
-            logger.debug { "Reading ${section} data..." }
+            logger.debug { "Reading $section data..." }
             val needle = section.name.toByteArray(Charsets.US_ASCII) + section.version.toLittleEndian().toByteArray()
             for (count in 1 .. (section.count ?: Int.MAX_VALUE)) {
                 if (readPosition >= data.size)
@@ -147,7 +151,7 @@ open class SaveData(val data: ByteArray) {
         }
         Section.entries.find { sections[it]!!.count() != (it.count ?: sections[it]!!.count()) }?.also {
             throw Exception(
-                "Section [${it}] should repeat ${it.count} times, but ${sections[it]!!.count()} were found."
+                "structure.Section [${it}] should repeat ${it.count} times, but ${sections[it]!!.count()} were found."
             )
         }
 

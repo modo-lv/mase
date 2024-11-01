@@ -1,5 +1,7 @@
 @file:OptIn(ExperimentalStdlibApi::class)
 
+package utils
+
 import org.kotlincrypto.endians.LittleEndian
 
 fun Int.toHex() = "0x${this.toHexString(HexFormat.UpperCase)}"
@@ -17,8 +19,3 @@ fun ByteArray.leInt(index: Int): Int =
  */
 fun ByteArray.leShort(index: Int): Short =
     LittleEndian.bytesToShort(this[index], this[index + 1])
-
-
-fun <T> MutableList<T>.addAll(vararg elements: T) {
-    this.addAll(elements)
-}

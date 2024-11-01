@@ -1,12 +1,16 @@
-import io.github.oshai.kotlinlogging.KotlinLogging
-import kotlin.properties.Delegates
+package structure
 
-private val logger = KotlinLogging.logger { }
+import io.github.oshai.kotlinlogging.KotlinLogging
+import utils.leInt
+import utils.toHex
+import kotlin.properties.Delegates
 
 /**
  * @param segment Address space containing the data to calculate this checksum for.
  */
 class Checksum(val segment: IntRange, val xorValue: UInt) {
+    private val logger = KotlinLogging.logger { }
+
     constructor(address: Int, xorValue: UInt) : this(address ..< address, xorValue)
 
     /**

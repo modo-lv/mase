@@ -7,6 +7,7 @@ import javafx.scene.layout.VBox
 import javafx.scene.text.Text
 import javafx.stage.FileChooser
 import javafx.stage.Stage
+import structure.SaveFile
 import java.io.File
 
 class MainApp : Application() {
@@ -25,7 +26,7 @@ class MainApp : Application() {
                     }
                 }
             },
-            Text("Checksum: ???"),
+            Text("structure.Checksum: ???"),
             Text("File: ${parameters.unnamed[0]}")
         )
 

@@ -1,3 +1,5 @@
+package structure
+
 /**
  * @param count How many times in a row does the section repeat.
  * @param size If known & static
