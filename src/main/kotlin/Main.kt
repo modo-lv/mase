@@ -1,3 +1,4 @@
+import io.github.oshai.kotlinlogging.KotlinLogging
 import javafx.application.Application
 import javafx.fxml.FXMLLoader
 import javafx.scene.Scene
@@ -7,6 +8,15 @@ import structure.SaveFile
 import java.io.File
 
 class Main : Application() {
+    private val logger = KotlinLogging.logger { }
+
+    val fileName get() = Save.file.toString()
+
+    fun save() {
+        logger.info { "Writing [${Save.file}]..." }
+        Save.file.writeBytes(Save.data)
+    }
+
     override fun start(stage: Stage) {
         val vbox = FXMLLoader().run {
             location = javaClass.getResource("/gui/main.fxml")

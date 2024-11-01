@@ -1,4 +1,4 @@
-package gui.checksums
+package gui.tabs
 
 import javafx.event.Event
 import javafx.fxml.FXML
@@ -7,7 +7,7 @@ import javafx.scene.control.TableColumn
 import javafx.scene.control.TableView
 import utils.toHex
 
-open class ChecksumController {
+open class StatController {
     @FXML private lateinit var computed: TableColumn<Any, Any>
     @FXML private lateinit var checksumTable: TableView<Any>
 

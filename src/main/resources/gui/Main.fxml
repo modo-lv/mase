@@ -3,8 +3,17 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox xmlns:fx="http://javafx.com/fxml/1">
+<VBox xmlns:fx="http://javafx.com/fxml/1" fx:controller="Main">
   <TabPane VBox.vgrow="ALWAYS">
-    <fx:include source="checksums/checksum-tab.fxml" />
+    <fx:include source="tabs/checksum-tab.fxml" />
   </TabPane>
+  <Separator style="-fx-padding: 10 0;" />
+  <GridPane>
+    <Label text="${controller.fileName}"
+           GridPane.hgrow="ALWAYS"
+           GridPane.columnIndex="0"
+           style="-fx-padding: 10;"
+    />
+    <Button GridPane.columnIndex="1" onMouseClicked="#save">Save</Button>
+  </GridPane>
 </VBox>

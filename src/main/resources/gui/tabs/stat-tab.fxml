@@ -4,9 +4,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.layout.AnchorPane?>
 <Tab xmlns:fx="http://javafx.com/fxml"
-     fx:controller="gui.checksums.ChecksumController"
+     fx:controller="gui.tabs.StatController"
      closable="false"
-     text="Checksums"
+     text="Character"
      onSelectionChanged="#refresh"
 >
   <VBox VBox.vgrow="ALWAYS">
