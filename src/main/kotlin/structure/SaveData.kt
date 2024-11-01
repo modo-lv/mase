@@ -7,6 +7,9 @@ import org.kotlincrypto.endians.LittleEndian.Companion.toLittleEndian
 import player.Location
 import player.PlayerLocation.Companion.readPlayer
 import utils.leInt
+import utils.leULong
+import utils.writeLeUInt
+import utils.writeLeULong
 
 typealias SectionMap = MutableMap<Section, MutableList<Int>>
 
@@ -14,11 +17,43 @@ open class SaveData(val data: ByteArray) {
     private val logger = KotlinLogging.logger { }
 
     val sections: SectionMap = mutableMapOf()
-    val checksums: ObservableList<Checksum> = FXCollections.observableArrayList<Checksum>()
+    val checksums: ObservableList<Checksum> = FXCollections.observableArrayList()
+    var xp: ULong = 0u
 
     fun read() {
         readSections()
         readChecksums()
+        computeChecksums()
+        readPlayer()
+    }
+
+    fun readPlayer() {
+        val xpAddr = 0x003EE222
+        xp = data.leULong(xpAddr)
+    }
+
+    fun updateXp(newXp: ULong) {
+        val xpAddr = 0x003EE222
+        data.writeLeULong(newXp, xpAddr)
+    }
+
+    fun fixChecksums() {
+        this.checksums.forEach {
+            if (it.isMismatched()) {
+                logger.info { "Checksum [${it.segment}] is mismatched, updating..." }
+                val pos = it.segment.last + 1
+                val mangle1 = it.computedHash / 50u
+                val mangle2 = mangle1 - it.computedHash
+                val mangle3 = mangle1 * mangle2
+                val mangle4 = mangle3 xor mangle2
+
+                data.writeLeUInt(mangle1, pos)
+                data.writeLeUInt(mangle2, pos + 4)
+                data.writeLeUInt(mangle3, pos + 8)
+                data.writeLeUInt(mangle4, pos + 12)
+                data.writeLeUInt(it.computedHash, pos + 16)
+            }
+        }
         computeChecksums()
     }
 
@@ -104,7 +139,7 @@ open class SaveData(val data: ByteArray) {
 
     fun computeChecksums() {
         if (this.checksums.isEmpty()) {
-            logger.warn { "structure.Checksum data missing, reading that first." }
+            logger.warn { "Checksum data missing, reading that first." }
             readChecksums()
         }
         var hash = 0xFFFFFFFFu

@@ -14,6 +14,7 @@ class Main : Application() {
 
     fun save() {
         logger.info { "Writing [${Save.file}]..." }
+        Save.fixChecksums()
         Save.file.writeBytes(Save.data)
     }
 

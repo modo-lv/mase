@@ -5,7 +5,7 @@ import structure.SaveData
 
 class ChecksumTests {
     @Test
-    fun checksums() {
+    fun `Checksums are computed correctly`() {
         SaveData(this::class.java.getResource("Test.svg")!!.readBytes()).apply {
             computeChecksums()
             checksums.size `should be equal to` 5
@@ -16,6 +16,23 @@ class ChecksumTests {
                 0xDE24B146u,
                 0xDB8B7367u,
                 0x21DB4ED9u,
+            )
+        }
+    }
+
+    @Test
+    fun `Checksums are fixed correctly`() {
+        SaveData(this::class.java.getResource("Test.svg")!!.readBytes()).apply {
+            updateXp(2u)
+            computeChecksums()
+            fixChecksums()
+            checksums.map { it.computedHash } `should contain same` checksums.map { it.storedHash }
+            checksums.map { it.computedHash } `should contain same` listOf(
+                0x97034B6Cu,
+                0xD2523FC1u,
+                0x437E1571u,
+                0x46D1D750u,
+                0xBC81EAEEu,
             )
         }
     }
