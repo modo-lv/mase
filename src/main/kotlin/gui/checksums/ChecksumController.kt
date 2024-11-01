@@ -10,6 +10,7 @@ open class ChecksumController {
 
     @FXML
     protected fun refresh(event: Event) {
+        table.items.clear()
         Main.Save.computeChecksums()
 
         val items = Main.Save.checksums.mapIndexed { index, checksum ->
@@ -20,7 +21,6 @@ open class ChecksumController {
                 "stored" to checksum.storedHash.toHex(),
             )
         }
-        table.items.clear()
         table.items.addAll(items)
     }
 }

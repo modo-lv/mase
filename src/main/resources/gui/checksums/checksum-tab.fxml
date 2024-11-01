@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.control.cell.MapValueFactory?>
+<?import javafx.scene.layout.VBox?>
+<Tab xmlns:fx="http://javafx.com/fxml"
+     fx:controller="gui.checksums.ChecksumController"
+     closable="false"
+     text="Checksums"
+     onSelectionChanged="#refresh"
+>
+  <VBox>
+    <Button onMouseClicked="#refresh" text="Reload" />
+    <TableView fx:id="table">
+      <columns>
+        <TableColumn>
+          <cellValueFactory>
+            <MapValueFactory key="index" />
+          </cellValueFactory>
+        </TableColumn>
+        <TableColumn text="Segment">
+          <cellValueFactory>
+            <MapValueFactory key="segment" />
+          </cellValueFactory>
+        </TableColumn>
+        <TableColumn text="Computed">
+          <cellValueFactory>
+            <MapValueFactory key="computed" />
+          </cellValueFactory>
+        </TableColumn>
+        <TableColumn text="Stored">
+          <cellValueFactory>
+            <MapValueFactory key="stored" />
+          </cellValueFactory>
+        </TableColumn>
+      </columns>
+    </TableView>
+  </VBox>
+</Tab>

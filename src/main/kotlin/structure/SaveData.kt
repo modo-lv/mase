@@ -1,10 +1,11 @@
 package structure
 
 import io.github.oshai.kotlinlogging.KotlinLogging
+import javafx.collections.FXCollections
+import javafx.collections.ObservableList
 import org.kotlincrypto.endians.LittleEndian.Companion.toLittleEndian
 import player.Location
 import player.PlayerLocation.Companion.readPlayer
-import utils.addAll
 import utils.leInt
 
 typealias SectionMap = MutableMap<Section, MutableList<Int>>
@@ -13,7 +14,7 @@ open class SaveData(val data: ByteArray) {
     private val logger = KotlinLogging.logger { }
 
     val sections: SectionMap = mutableMapOf()
-    val checksums = mutableListOf<Checksum>()
+    val checksums: ObservableList<Checksum> = FXCollections.observableArrayList<Checksum>()
 
     fun read() {
         readSections()
@@ -27,6 +28,7 @@ open class SaveData(val data: ByteArray) {
             readSections()
         }
         logger.info { "Reading checksums..." }
+        checksums.clear()
         checksums.addAll(
             Checksum(
                 0 ..< sections[Section.GIVD]!!.single() - Checksum.CHECKSUM_SIZE,

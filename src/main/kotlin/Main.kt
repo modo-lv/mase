@@ -1,4 +1,3 @@
-import gui.checksums.ChecksumController
 import javafx.application.Application
 import javafx.fxml.FXMLLoader
 import javafx.scene.Scene
@@ -9,7 +8,10 @@ import java.io.File
 
 class Main : Application() {
     override fun start(stage: Stage) {
-        val vbox = FXMLLoader().load<VBox>(javaClass.getResourceAsStream("/gui/Main.fxml"))
+        val vbox = FXMLLoader().run {
+            location = javaClass.getResource("/gui/main.fxml")
+            load<VBox>()
+        }
 
         stage.apply {
             scene = Scene(vbox)
