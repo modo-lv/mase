@@ -1,12 +1,15 @@
 /**
- * @param dataStartAddress Starting address of the data being hashed
- * @param endAddr Ending address of the data being hashed
+ * @param data Address space containing the data to calculate this checksum for.
  */
-class Checksum(val dataStartAddress: Int, val endAddr: Int, xorValue: Int) {
-
+class Checksum(val data: IntRange, val xorValue: UInt) {
 
     companion object {
-        val MagicTable = arrayOf(
+        const val CHECKSUM_SIZE = 20 // Checksum and its 4 derivatives take 20 bytes
+
+        /**
+         * Pre-computed CRC32 checksums of every possible byte value (0-255).
+         */
+        val CRC32_TABLE = arrayOf(
             0x00000000u, 0x77073096u, 0xEE0E612Cu, 0x990951BAu, 0x076DC419u, 0x706AF48Fu, 0xE963A535u, 0x9E6495A3u,
             0x0EDB8832u, 0x79DCB8A4u, 0xE0D5E91Eu, 0x97D2D988u, 0x09B64C2Bu, 0x7EB17CBDu, 0xE7B82D07u, 0x90BF1D91u,
             0x1DB71064u, 0x6AB020F2u, 0xF3B97148u, 0x84BE41DEu, 0x1ADAD47Du, 0x6DDDE4EBu, 0xF4D4B551u, 0x83D385C7u,

@@ -1,20 +1,68 @@
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.kotlincrypto.endians.LittleEndian.Companion.toLittleEndian
 import java.io.File
-import java.lang.Exception
 
 typealias SectionMap = MutableMap<Section, MutableList<Int>>
+
+private val logger = KotlinLogging.logger { }
 
 class Save(
     val file: File,
 ) {
     val sections: SectionMap = mutableMapOf()
+    val checksums = mutableListOf<Checksum>()
 
     fun read() {
         readSections()
+        readChecksums()
+        computeChecksums()
     }
 
+    fun readChecksums() {
+        logger.info { "Reading checksums..." }
+        val bytes = file.readBytes()
+        var readPosition = 0
+        checksums.addLast(
+            Checksum(
+                0..<sections[Section.GIVD]!!.first() - Checksum.CHECKSUM_SIZE,
+                xorValue = 0xAEF0FFA0u
+            )
+        )
+        checksums.addLast(
+            Checksum(
+                sections[Section.GIVD]!!.first()..<sections[Section.GMTP]!!.first() - Checksum.CHECKSUM_SIZE,
+                xorValue = 0x12345678u
+            )
+        )
+
+    }
+
+    @OptIn(ExperimentalStdlibApi::class)
+    fun computeChecksums() {
+        val bytes = file.readBytes()
+        var hash = 0xFFFFFFFFu
+        checksums.forEach { checksum ->
+            for (address in checksum.data) {
+                val crcIndex = bytes[address].toUByte().toUInt().xor(hash).toUByte().toInt()
+                hash = hash.shr(8).xor(Checksum.CRC32_TABLE[crcIndex])
+            }
+            hash = hash.xor(checksum.xorValue)
+
+            // Last checksum needs to be flipped
+            /*if (checksum == checksums.last()) {
+                hash = hash.inv()
+            }*/
+
+            val fileHash = bytes.leInt((checksum.data.last + 1) + 16)
+            logger.debug { "File hash: 0x${fileHash.toHexString()}, our hash: 0x${hash.toHexString()}" }
+
+            hash = hash.xor(checksum.xorValue)
+        }
+    }
+
+    @OptIn(ExperimentalStdlibApi::class)
     fun readSections() {
-        println("Reading sections...")
+        logger.info { "Reading sections..." }
         val bytes = file.readBytes()
         var readPosition = 0
         for (section in Section.entries) {
@@ -47,6 +95,6 @@ class Save(
             )
         }
 
-        //println("Found ${sections.mapValues { it.value.map { "0x${it.toHexString(HexFormat.UpperCase)}" } }}")
+        logger.debug { "Found ${sections.mapValues { it.value.map { "0x${it.toHexString(HexFormat.UpperCase)}" } }}" }
     }
 }

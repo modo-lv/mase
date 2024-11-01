@@ -29,6 +29,9 @@ repositories {
 }
 
 dependencies {
+    implementation("io.github.oshai:kotlin-logging-jvm:7.0.0")
+    implementation("org.slf4j:slf4j-api:2.0.16")
+    implementation("ch.qos.logback:logback-classic:1.5.12")
     implementation("org.kotlincrypto.endians:endians:0.3.1")
     implementation("commons-io:commons-io:2.17.0")
     testImplementation(kotlin("test"))
