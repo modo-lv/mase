@@ -1,9 +1,7 @@
 package structure
 
-import gui.tabs.Model
+import gui.Model
 import io.github.oshai.kotlinlogging.KotlinLogging
-import javafx.collections.FXCollections
-import javafx.collections.ObservableList
 import org.kotlincrypto.endians.LittleEndian.Companion.toLittleEndian
 import player.Location
 import player.PlayerLocation.Companion.readPlayer

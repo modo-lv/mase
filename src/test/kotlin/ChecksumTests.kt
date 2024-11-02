@@ -1,4 +1,4 @@
-import gui.tabs.Model
+import gui.Model
 import org.amshove.kluent.`should be equal to`
 import org.amshove.kluent.`should contain same`
 import org.junit.jupiter.api.Test

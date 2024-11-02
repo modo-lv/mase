@@ -1,5 +1,6 @@
 package gui.tabs
 
+import gui.Model
 import javafx.fxml.FXML
 import javafx.scene.control.Spinner
 

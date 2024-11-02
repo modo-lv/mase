@@ -1,4 +1,4 @@
-package gui.tabs
+package gui
 
 import Main
 import javafx.beans.property.SimpleObjectProperty

@@ -1,5 +1,6 @@
 package gui.tabs
 
+import gui.Model
 import javafx.beans.binding.Bindings
 import javafx.beans.property.SimpleStringProperty
 import javafx.event.Event

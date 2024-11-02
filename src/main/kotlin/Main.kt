@@ -1,4 +1,4 @@
-import gui.tabs.Model
+import gui.Model
 import io.github.oshai.kotlinlogging.KotlinLogging
 import javafx.application.Application
 import javafx.fxml.FXMLLoader
