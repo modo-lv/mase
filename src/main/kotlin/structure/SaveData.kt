@@ -33,9 +33,10 @@ open class SaveData(val data: ByteArray) {
     }
 
     fun fixChecksums() {
+        computeChecksums()
         Model.checksums.forEach {
             if (it.isMismatched()) {
-                logger.info { "Checksum [${it.segment}] is mismatched, updating..." }
+                logger.debug { "Checksum [${it.segment}] is mismatched, updating..." }
                 val pos = it.segment.last + 1
                 val mangle1 = it.computedHash / 50u
                 val mangle2 = mangle1 - it.computedHash
