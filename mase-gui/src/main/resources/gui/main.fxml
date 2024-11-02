@@ -4,8 +4,8 @@
 <?import javafx.scene.layout.*?>
 
 <VBox xmlns:fx="http://javafx.com/fxml/1" fx:controller="Main">
-  <TabPane VBox.vgrow="ALWAYS">
-    <fx:include source="tabs/stat-tab.fxml" />
+  <TabPane VBox.vgrow="ALWAYS" fx:id="mainTabs">
+    <fx:include source="tabs/character-tab.fxml" />
     <fx:include source="tabs/checksum-tab.fxml" />
   </TabPane>
   <Separator style="-fx-padding: 10 0;" />

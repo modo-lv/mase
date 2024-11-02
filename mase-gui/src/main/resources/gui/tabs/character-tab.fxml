@@ -4,7 +4,7 @@
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.layout.VBox?>
 <Tab xmlns:fx="http://javafx.com/fxml"
-     fx:controller="gui.tabs.StatController"
+     fx:controller="gui.tabs.CharacterController"
      closable="false"
      text="Character"
 >

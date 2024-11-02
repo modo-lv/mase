@@ -4,7 +4,7 @@ import gui.Model
 import javafx.fxml.FXML
 import javafx.scene.control.Spinner
 
-open class StatController {
+open class CharacterController {
     @FXML private lateinit var xpField: Spinner<Double>
 
     @FXML fun initialize() {

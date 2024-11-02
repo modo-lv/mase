@@ -1,21 +1,29 @@
 import gui.Model
 import io.github.oshai.kotlinlogging.KotlinLogging
 import javafx.application.Application
+import javafx.beans.property.SimpleObjectProperty
+import javafx.fxml.FXML
 import javafx.fxml.FXMLLoader
 import javafx.scene.Scene
+import javafx.scene.control.TabPane
 import javafx.scene.layout.VBox
 import javafx.stage.Stage
 import java.io.File
 
 class Main : Application() {
+    @FXML lateinit var mainTabs: TabPane
     private val logger = KotlinLogging.logger { }
 
-    val fileName get() = Save.file.toString()
+    @FXML fun initialize() {
+        mainTabs.disableProperty().set(Save == null)
+    }
+
+    val fileName get() = Save?.file.toString()
 
     fun save() {
-        logger.info { "Writing [${Save.file}]..." }
-        Save.fixChecksums()
-        Save.file.writeBytes(Save.bytes)
+        logger.info { "Writing [${Save?.file}]..." }
+        Save?.fixChecksums()
+        Save?.let { it.file.writeBytes(it.bytes) }
     }
 
     override fun start(stage: Stage) {
@@ -35,13 +43,18 @@ class Main : Application() {
     }
 
     companion object {
-        lateinit var Save: SaveFile
+        private val _Save = SimpleObjectProperty<SaveFile>(null)
+        var Save: SaveFile?
+            get() = _Save.get()
+            set(value) = _Save.set(value)
+        val SaveProperty get() = _Save
     }
 }
 
 fun main(vararg args: String) {
     //println(System.getProperty("sun.arch.data.model"))
-    Main.Save = SaveFile(file = File(args[0])).computeChecksums()
+    if (args.isNotEmpty())
+        Main.Save = SaveFile(file = File(args[0])).computeChecksums()
     Model.initialize()
     Application.launch(Main::class.java, *args)
 }
