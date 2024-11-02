@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration>
+
+<configuration>
+    <!-- custom coloring conversion -->
+    <conversionRule conversionWord="color" class="wiring.LogHighlighter" />
+
+    <import class="ch.qos.logback.classic.PatternLayout"/>
+    <import class="ch.qos.logback.core.encoder.LayoutWrappingEncoder"/>
+    <import class="ch.qos.logback.core.ConsoleAppender"/>
+
+    <appender name="STDOUT" class="ConsoleAppender">
+        <encoder class="LayoutWrappingEncoder">
+            <layout class="PatternLayout">
+                <pattern>%gray([%d{yyyy-MM-dd HH:mm:ss.SSS}])[%color(%-5level)] %color(%m)\n</pattern>
+            </layout>
+        </encoder>
+    </appender>
+
+    <variable name="LOG_LEVEL" value="${MASE_LOG_LEVEL:-INFO}" />
+    <root level="${LOG_LEVEL}">
+        <appender-ref ref="STDOUT"/>
+    </root>
+</configuration>

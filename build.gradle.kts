@@ -1,3 +1,4 @@
+/*
 import org.gradle.nativeplatform.platform.internal.DefaultNativePlatform
 
 plugins {
@@ -34,7 +35,6 @@ tasks.test {
 }
 
 dependencies {
-    implementation("org.kotlincrypto.endians:endians:0.3.1")
     implementation("commons-io:commons-io:2.17.0")
 
     // Logging
@@ -54,4 +54,4 @@ javafx {
 
 kotlin {
     jvmToolchain(21)
-}
+}*/

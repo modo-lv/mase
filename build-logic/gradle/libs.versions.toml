@@ -1,0 +1,23 @@
+[versions]
+kotlin = "2.0.0"
+jvm = "21"
+
+[libraries]
+# Gradle plugins
+gradle-kotlin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
+
+# Kotlin
+slf4j = { module = "org.slf4j:slf4j-api", version = "2.0.16" }
+kt-serial = { module = "org.jetbrains.kotlin:kotlin-serialization", version.ref = "kotlin" }
+
+# Logging
+kt-logging = { module = "io.github.oshai:kotlin-logging-jvm", version = "7.0.0" }
+logback = { module = "ch.qos.logback:logback-classic", version = "1.5.7" }
+
+# Testing
+junit = { module = "org.junit.jupiter:junit-jupiter", version = "5.10.2" }
+kluent = { module = "org.amshove.kluent:kluent", version = "1.73" }
+
+[bundles]
+core = ["kt-logging", "slf4j"]
+test = ["junit", "kluent"]

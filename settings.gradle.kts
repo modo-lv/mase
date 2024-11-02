@@ -1,5 +1,23 @@
-plugins {
-    id("org.gradle.toolchains.foojay-resolver-convention") version "0.8.0"
-}
 rootProject.name = "mase"
 
+pluginManagement {
+    includeBuild("build-logic")
+}
+
+include(
+    "mase-core",
+    "mase-cli",
+    "mase-gui",
+)
+
+dependencyResolutionManagement {
+    @Suppress("UnstableApiUsage")
+    repositories {
+        mavenCentral()
+    }
+    versionCatalogs {
+        create("libs") {
+            from(files("build-logic/gradle/libs.versions.toml"))
+        }
+    }
+}
