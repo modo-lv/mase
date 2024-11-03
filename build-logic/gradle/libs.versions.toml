@@ -6,6 +6,9 @@ jvm = "21"
 # Gradle plugins
 gradle-kotlin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 
+# Misc
+commons = { module = "org.apache.commons:commons-lang3", version = "3.17.0" }
+
 # Kotlin
 slf4j = { module = "org.slf4j:slf4j-api", version = "2.0.16" }
 kt-serial = { module = "org.jetbrains.kotlin:kotlin-serialization", version.ref = "kotlin" }
@@ -19,5 +22,5 @@ junit = { module = "org.junit.jupiter:junit-jupiter", version = "5.10.2" }
 kluent = { module = "org.amshove.kluent:kluent", version = "1.73" }
 
 [bundles]
-core = ["kt-logging", "slf4j"]
+core = ["commons", "kt-logging", "slf4j"]
 test = ["junit", "kluent"]

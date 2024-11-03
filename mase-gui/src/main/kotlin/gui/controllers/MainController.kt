@@ -1,12 +1,12 @@
 package gui.controllers
 
-import gui.models.MainModel
+import Main
 import gui.models.SaveFileModel
 import javafx.scene.Scene
 import javafx.scene.control.TabPane
 import javafx.stage.FileChooser
 import javafx.stage.FileChooser.ExtensionFilter
-import java.io.File
+import utils.Adom
 
 class MainController {
     lateinit var mainScene: Scene
@@ -22,7 +22,7 @@ class MainController {
     fun openFile() {
         if (!this::fileChooser.isInitialized) {
             fileChooser = FileChooser().apply {
-                initialDirectory = File("c:\\users\\martin\\Documents\\ADOM\\adom_steam\\savedg")
+                initialDirectory = Adom.defaultSaveFolderPath().toFile()
                 title = "Select an ADOM save file to edit"
                 extensionFilters.addAll(
                     ExtensionFilter("ADOM save files (*.svg)", "*.svg"),
