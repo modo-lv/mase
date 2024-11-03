@@ -8,26 +8,28 @@
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.Scene?>
 
-
-<VBox alignment="BOTTOM_RIGHT" prefHeight="198.0" prefWidth="348.0" stylesheets="@style.css"
-      xmlns="http://javafx.com/javafx/23.0.1"
-      xmlns:fx="http://javafx.com/fxml/1">
-  <HBox styleClass="padded">
-    <Label text="&lt;attribute&gt;">
-      <font>
-        <Font size="24.0"/>
-      </font>
-    </Label>
-  </HBox>
-  <Region prefHeight="200.0" prefWidth="200.0"/>
-  <ButtonBar prefHeight="40.0" prefWidth="200.0" styleClass="padded">
-    <buttons>
-      <Button cancelButton="true" text="Cancel"/>
-      <Button defaultButton="true" text="OK"/>
-    </buttons>
-    <opaqueInsets>
-      <Insets/>
-    </opaqueInsets>
-  </ButtonBar>
-</VBox>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.StackPane?>
+<Scene xmlns:fx="http://javafx.com/fxml/1" fx:id="editorScene">
+  <VBox alignment="BOTTOM_RIGHT" stylesheets="@style.css" xmlns="http://javafx.com/javafx/23.0.1">
+    <HBox styleClass="padded">
+      <Label text="&lt;stat&gt;" fx:id="statLabel">
+        <font>
+          <Font size="24.0" />
+        </font>
+      </Label>
+    </HBox>
+    <StackPane fx:id="region" />
+    <ButtonBar styleClass="padded">
+      <buttons>
+        <Button cancelButton="true" text="Cancel" onAction="#cancel" />
+        <Button defaultButton="true" text="OK" onAction="#ok" />
+      </buttons>
+      <opaqueInsets>
+        <Insets />
+      </opaqueInsets>
+    </ButtonBar>
+  </VBox>
+</Scene>

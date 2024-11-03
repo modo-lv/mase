@@ -13,7 +13,7 @@
               <PropertyValueFactory property="name" />
             </cellValueFactory>
           </TableColumn>
-          <TableColumn fx:id="statCurrent" prefWidth="388.0" sortable="false" text="Value(s)" />
+          <TableColumn fx:id="statValue" prefWidth="388.0" sortable="false" text="Value(s)" />
           <TableColumn prefWidth="100.0" sortable="false" text="Actions" />
         </columns>
         <columnResizePolicy>

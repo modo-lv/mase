@@ -9,10 +9,14 @@ class StatTabModel {
     fun initialize(): StatTabModel {
         attributes.clear()
 
+        if (Main.Save == null)
+            return this
+
         attributes.add(
             StatModel(
                 name = "Experience points",
-                currentValue = SimpleObjectProperty(Main.Save!!.player.character.xp)
+                currentValue = SimpleObjectProperty(Main.Save!!.player.character.xp),
+                _cc = { Main.Save!!.player.character.xp = it.currentValue.value }
             )
         )
 

@@ -31,7 +31,7 @@
     <HBox fx:id="footer" styleClass="padded">
       <TextField fx:id="footerFileName" editable="false" HBox.hgrow="ALWAYS" />
       <Separator orientation="VERTICAL" />
-      <Button mnemonicParsing="false" text="Save" />
+      <Button mnemonicParsing="false" text="Save" onAction="#save" />
     </HBox>
   </VBox>
 </Scene>

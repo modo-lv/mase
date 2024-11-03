@@ -3,10 +3,10 @@ package gui.controllers
 import Main
 import gui.models.MainModel
 import gui.models.SaveFileModel
-import gui.models.StatModel
-import javafx.collections.ObservableList
 import javafx.scene.Scene
-import javafx.scene.control.*
+import javafx.scene.control.Label
+import javafx.scene.control.TabPane
+import javafx.scene.control.TextField
 import javafx.scene.layout.HBox
 import javafx.stage.FileChooser
 import javafx.stage.FileChooser.ExtensionFilter
@@ -52,5 +52,12 @@ class MainController {
             }
         }
         Main.Save = fileChooser.showOpenDialog(mainScene.window)?.let { SaveFileModel(it) }
+    }
+
+    fun save() {
+        Main.Save?.apply {
+            fixChecksums()
+            file.writeBytes(bytes)
+        }
     }
 }
