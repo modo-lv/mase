@@ -31,8 +31,10 @@ class ChecksumTabController {
         computed.setCellFactory {
             object : TableCell<ChecksumSegment, String>() {
                 override fun updateItem(item: String?, empty: Boolean) {
-                    if (Main.Save == null)
+                    if (Main.Save == null || item == null) {
+                        this.text = null
                         return
+                    }
                     val index = indexProperty().value
                     if (index < 0 || index >= Main.Save!!.checksumSegments.size) {
                         return

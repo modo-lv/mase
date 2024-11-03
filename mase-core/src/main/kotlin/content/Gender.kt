@@ -1,6 +1,6 @@
 package content
 
-enum class Gender(id: Int) {
+enum class Gender(override val id: Int) : WithIntId {
     Male(0x00),
     Female(0x01),
 

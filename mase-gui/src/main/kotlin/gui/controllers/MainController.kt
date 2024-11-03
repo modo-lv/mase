@@ -6,10 +6,7 @@ import gui.models.SaveFileModel
 import gui.models.StatModel
 import javafx.collections.ObservableList
 import javafx.scene.Scene
-import javafx.scene.control.TabPane
-import javafx.scene.control.TableColumn
-import javafx.scene.control.TableView
-import javafx.scene.control.TextField
+import javafx.scene.control.*
 import javafx.scene.layout.HBox
 import javafx.stage.FileChooser
 import javafx.stage.FileChooser.ExtensionFilter
@@ -19,6 +16,7 @@ import utils.Adom
 class MainController {
     lateinit var mainScene: Scene
     lateinit var mainTabs: TabPane
+    lateinit var signature: Label
     lateinit var statTable: TableView<Any>
     lateinit var statCurrent: TableColumn<Any, Any>
     lateinit var footer: HBox
@@ -32,6 +30,8 @@ class MainController {
     @Suppress("UNCHECKED_CAST")
     fun initialize() {
         model = MainModel().initialize()
+
+        signature.textProperty().bind(model.signature)
 
         mainTabs.disableProperty().bind(Main.SaveProperty.isNull)
 

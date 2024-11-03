@@ -1,6 +1,6 @@
 package content
 
-enum class Race(id: Int) {
+enum class Race(override val id: Int): WithIntId {
     Human(0x00),
     Troll(0x01),
     HighElf(0x02),

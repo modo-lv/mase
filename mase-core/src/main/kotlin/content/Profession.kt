@@ -1,6 +1,6 @@
 package content
 
-enum class Profession(id: Int) {
+enum class Profession(override val id: Int): WithIntId {
     Fighter(0x00),
     Paladin(0x01),
     Ranger(0x02),

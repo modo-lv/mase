@@ -1,5 +1,6 @@
 package utils
 
+import content.WithIntId
 import org.kotlincrypto.endians.LittleEndian
 
 @ExperimentalStdlibApi fun Int.toHex() = "0x${this.toHexString(HexFormat.UpperCase)}"
@@ -32,3 +33,9 @@ fun ByteArray.readLeULong(index: Int): ULong =
  */
 fun ByteArray.readLeShort(index: Int): Short =
     LittleEndian.bytesToShort(this[index], this[index + 1])
+
+/**
+ * Read
+ */
+inline fun <reified T> ByteArray.readLeIntEnum(index: Int): T where T: Enum<T>, T: WithIntId =
+    enumValues<T>().single { it.id == this.readLeInt(index) }
