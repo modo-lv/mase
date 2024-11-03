@@ -23,7 +23,8 @@ open class SaveData<T : SaveData<T>>(val bytes: ByteArray) {
     /**
      * Save game checksum segment data, automatically loaded on first access.
      *
-     * Since checksum segments don't change outside of gameplay, this only needs to be done once per save file read.
+     * Since checksum segments don't change outside of gameplay,
+     * this only needs to be done once per save file read.
      */
     val checksumSegments: ChecksumSegments by lazy { bytes.findChecksumSegments(sections) }
 

@@ -6,6 +6,7 @@ plugins {
 
 dependencies {
     implementation("org.kotlincrypto.endians:endians:0.3.1")
+    implementation("com.hanggrian.ktfx:ktfx:0.3")
 
     testImplementation(libs.logback)
 }

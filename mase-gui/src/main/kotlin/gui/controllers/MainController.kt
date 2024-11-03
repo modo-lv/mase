@@ -9,8 +9,11 @@ import javafx.scene.Scene
 import javafx.scene.control.TabPane
 import javafx.scene.control.TableColumn
 import javafx.scene.control.TableView
+import javafx.scene.control.TextField
+import javafx.scene.layout.HBox
 import javafx.stage.FileChooser
 import javafx.stage.FileChooser.ExtensionFilter
+import ktfx.bindings.stringBindingBy
 import utils.Adom
 
 class MainController {
@@ -18,6 +21,8 @@ class MainController {
     lateinit var mainTabs: TabPane
     lateinit var statTable: TableView<Any>
     lateinit var statCurrent: TableColumn<Any, Any>
+    lateinit var footer: HBox
+    lateinit var footerFileName: TextField
 
     lateinit var model: MainModel
 
@@ -35,6 +40,9 @@ class MainController {
         statCurrent.setCellValueFactory { cell ->
             (cell.value as StatModel<Any>).currentValue
         }
+
+        footer.disableProperty().bind(Main.SaveProperty.isNull)
+        footerFileName.textProperty().bind(Main.SaveProperty.stringBindingBy { it?.file?.absolutePath ?: "" })
 
         Main.SaveProperty.addListener { _, _, _ ->
             model.initialize()
