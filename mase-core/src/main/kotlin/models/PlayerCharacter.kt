@@ -15,6 +15,6 @@ class PlayerCharacter(val bytes: ByteArray) {
         set(value) = bytes.writeLeULong(value, Addresses.XP)
 
     object Addresses {
-        const val XP = 0x003EE222
+        const val XP = 0x3EE222
     }
 }

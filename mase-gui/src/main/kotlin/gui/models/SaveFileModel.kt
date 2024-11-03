@@ -3,13 +3,9 @@ package gui.models
 import SaveData
 import java.io.File
 
-class SaveFileModel(val file: File) {
-    val _underlying = SaveData(file.readBytes())
-
-
-
-    fun computeChecksums() {
-        _underlying.computeChecksums()
+class SaveFileModel(val file: File) : SaveData<SaveFileModel>(file.readBytes()) {
+    override fun computeChecksums(): SaveFileModel {
         // TODO: Trigger checksum observer update
+        return super.computeChecksums()
     }
 }

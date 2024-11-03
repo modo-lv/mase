@@ -37,7 +37,7 @@ open class SaveData<T : SaveData<T>>(val bytes: ByteArray) {
     /**
      * (Re-)calculates checksums for each checksum segment, form the data currently in [bytes].
      */
-    fun computeChecksums(): T {
+    open fun computeChecksums(): T {
         if (checksumSegments.isEmpty()) {
             logger.warn { "Checksum segment list is empty, nothing to calculate. " }
             return self

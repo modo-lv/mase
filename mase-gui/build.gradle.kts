@@ -13,6 +13,7 @@ application {
 dependencies {
     implementation(project(":mase-core"))
     implementation(libs.logback)
+    implementation("com.hanggrian.ktfx:ktfx:0.3")
 
     testImplementation(testFixtures(project(":mase-core")))
 }
