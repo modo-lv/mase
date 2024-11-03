@@ -17,8 +17,6 @@ class MainController {
     lateinit var mainScene: Scene
     lateinit var mainTabs: TabPane
     lateinit var signature: Label
-    lateinit var statTable: TableView<Any>
-    lateinit var statCurrent: TableColumn<Any, Any>
     lateinit var footer: HBox
     lateinit var footerFileName: TextField
 
@@ -27,19 +25,12 @@ class MainController {
     private lateinit var fileChooser: FileChooser
 
     // Called by JavaFX on init
-    @Suppress("UNCHECKED_CAST")
     fun initialize() {
         model = MainModel().initialize()
 
         signature.textProperty().bind(model.signature)
 
         mainTabs.disableProperty().bind(Main.SaveProperty.isNull)
-
-        statTable.items = model.attributes as ObservableList<Any>
-
-        statCurrent.setCellValueFactory { cell ->
-            (cell.value as StatModel<Any>).currentValue
-        }
 
         footer.disableProperty().bind(Main.SaveProperty.isNull)
         footerFileName.textProperty().bind(Main.SaveProperty.stringBindingBy { it?.file?.absolutePath ?: "" })

@@ -1,16 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.Spinner?>
-<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.cell.PropertyValueFactory?>
+<?import javafx.scene.control.*?>
 <?import javafx.scene.layout.VBox?>
-<Tab xmlns:fx="http://javafx.com/fxml"
-     fx:controller="gui.tabs.CharacterController"
-     closable="false"
-     text="Character"
->
-  <VBox VBox.vgrow="ALWAYS">
-    <Label>XP:</Label>
-    <Spinner min="0" max="18446744073709551615" fx:id="xpField" editable="true" />
-  </VBox>
 
+<Tab text="Character" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.controllers.StatTabController">
+  <ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="200.0" prefWidth="200.0">
+    <VBox prefHeight="200.0" prefWidth="100.0">
+      <TableView fx:id="statTable">
+        <columns>
+          <TableColumn prefWidth="153.0" sortable="false" text="Attribute">
+            <cellValueFactory>
+              <PropertyValueFactory property="name" />
+            </cellValueFactory>
+          </TableColumn>
+          <TableColumn fx:id="statCurrent" prefWidth="388.0" sortable="false" text="Value(s)" />
+          <TableColumn prefWidth="100.0" sortable="false" text="Actions" />
+        </columns>
+        <columnResizePolicy>
+          <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+        </columnResizePolicy>
+      </TableView>
+    </VBox>
+  </ScrollPane>
 </Tab>
