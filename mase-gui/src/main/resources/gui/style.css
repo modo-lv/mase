@@ -1,3 +1,11 @@
+.root {
+    -fx-font-size: 10pt;
+}
+
+.padded {
+    -fx-padding: 5pt;
+}
+
 #checksumTable .table-cell {
     -fx-font-family: 'Consolas', monospace
 }

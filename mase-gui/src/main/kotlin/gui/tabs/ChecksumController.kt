@@ -33,14 +33,14 @@ class ChecksumController {
     @FXML
     private fun refresh(event: Event) {
         if ((event.target as Tab).isSelected) {
-            Main.Save?.computeChecksums()
+            Main.Save!!.computeChecksums()
             checksumChangeTrigger.set(!checksumChangeTrigger.get())
         }
     }
 
     @FXML
     private fun initialize() {
-        checksumTable.items = ObservableListWrapper(Main.Save?.checksumSegments ?: emptyList())
+        checksumTable.items = ObservableListWrapper(Main.Save!!._underlying.checksumSegments)
 
         segment.setCellValueFactory {
             // Segments aren't updated during editor operation, so we don't need to bind to a real property
@@ -59,10 +59,10 @@ class ChecksumController {
                     if (Main.Save == null)
                         return
                     val index = indexProperty().value
-                    if (index < 0 || index >= Main.Save!!.checksumSegments.size) {
+                    if (index < 0 || index >= Main.Save!!._underlying.checksumSegments.size) {
                         return
                     }
-                    val checksum = Main.Save!!.checksumSegments[index]
+                    val checksum = Main.Save!!._underlying.checksumSegments[index]
                     this.text = item
                     if (checksum.isMismatched())
                         this.styleClass.add("mismatched")

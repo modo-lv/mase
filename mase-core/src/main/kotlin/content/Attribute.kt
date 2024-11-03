@@ -4,6 +4,9 @@ import content.Attribute.Addresses.BASE
 import content.Attribute.Addresses.HISTORY
 import content.Attribute.Addresses.MAX
 
+/**
+ * @param offset How many attributes come before this one in save data.
+ */
 sealed class Attribute(val offset: Int) {
     class Strength : Attribute(0)
     class Learning : Attribute(1)
@@ -15,9 +18,13 @@ sealed class Attribute(val offset: Int) {
     class Mana : Attribute(7)
     class Perception : Attribute(8)
 
-    val baseAddress = BASE + (offset * 4)
-    val maxAddress = MAX + (offset * 4)
-    val historyAddress = HISTORY + (offset * 4)
+    val baseValueAddress = BASE + (offset * 4)
+    val maxValueAddress = MAX + (offset * 4)
+
+    /**
+     * Address where the "was changed by +/-XX" value is stored for this attribute.
+     */
+    val historyValueAddress = HISTORY + (offset * 4)
 
     object Addresses {
         /** Starting address for base stat values */
