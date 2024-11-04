@@ -1,7 +1,7 @@
 import io.github.oshai.kotlinlogging.KotlinLogging
 import models.Player
 import structure.*
-import utils.writeLeUInts
+import utils.leWrite
 
 /**
  * Represents a saved game and contains most of the methods for interacting with it.
@@ -64,7 +64,7 @@ open class SaveData<T : SaveData<T>>(val bytes: ByteArray) {
                 header.add(2, header[0] * header[1])
                 header.add(3, header[2] xor header[1])
                 header.add(4, segment.computedChecksum)
-                bytes.writeLeUInts(segment.range.last + 1, *header.toUIntArray())
+                bytes.leWrite(segment.range.last + 1, header)
                 segment.readStored(bytes)
             }
         }

@@ -3,7 +3,7 @@ package structure
 import io.github.oshai.kotlinlogging.KotlinLogging
 import javafx.beans.property.SimpleObjectProperty
 import utils.ObservableDelegates.delegateTo
-import utils.readLeUInt
+import utils.leNum
 import utils.toHex
 import kotlin.properties.Delegates.notNull
 
@@ -74,7 +74,7 @@ class ChecksumSegment(val range: IntRange, val xorValue: UInt) {
      * Update [storedChecksum] from the save data, without running a full [compute].
      */
     fun readStored(saveData: ByteArray) =
-        saveData.readLeUInt((this.range.last + 1) + 16).also {
+        saveData.leNum<UInt>((this.range.last + 1) + 16).also {
             storedChecksum = it
         }
 
