@@ -1,7 +1,7 @@
 plugins {
     id("mase-component")
     `java-test-fixtures`
-    id("org.openjfx.javafxplugin") version("0.1.0")
+    id("org.openjfx.javafxplugin")
 }
 
 dependencies {

@@ -3,7 +3,7 @@ import org.gradle.nativeplatform.platform.internal.DefaultNativePlatform
 plugins {
     id("mase-component")
     id("application")
-    id("org.openjfx.javafxplugin") version("0.1.0")
+    id("org.openjfx.javafxplugin")
 }
 
 application {

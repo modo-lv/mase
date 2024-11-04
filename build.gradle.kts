@@ -1,3 +1,7 @@
+plugins {
+    id("org.openjfx.javafxplugin") version("0.1.0")
+}
+
 /*
 import org.gradle.nativeplatform.platform.internal.DefaultNativePlatform
 
