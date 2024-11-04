@@ -43,10 +43,13 @@ open class SaveData<T : SaveData<T>>(val bytes: ByteArray) {
             logger.warn { "Checksum segment list is empty, nothing to calculate. " }
             return self
         }
-        var hash = 0xFFFFFFFFu
-        checksumSegments.forEach { segment ->
-            hash = segment.compute(hash, bytes, segment == checksumSegments.last()).xor(segment.xorValue)
+
+        checksumSegments.fold(-1) { hash, segment ->
+            segment
+                .compute(hash, bytes, isLast = segment == checksumSegments.last())
+                .xor(segment.xorValue)
         }
+
         return self
     }
 
@@ -58,8 +61,8 @@ open class SaveData<T : SaveData<T>>(val bytes: ByteArray) {
         checksumSegments.forEach { segment ->
             if (segment.isMismatched()) {
                 logger.debug { "Checksum [${segment.range}] is mismatched, updating..." }
-                val header = mutableListOf<UInt>()
-                header.add(0, segment.computedChecksum / 50u)
+                val header = mutableListOf<Int>()
+                header.add(0, segment.computedChecksum / 50)
                 header.add(1, header[0] - segment.computedChecksum)
                 header.add(2, header[0] * header[1])
                 header.add(3, header[2] xor header[1])

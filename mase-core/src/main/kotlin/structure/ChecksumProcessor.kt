@@ -20,11 +20,11 @@ fun ByteArray.findChecksumSegments(sections: Sections): ChecksumSegments {
     result.addAll(
         ChecksumSegment(
             0 ..< sections[Section.GIVD]!!.single() - ChecksumSegment.CHECKSUM_SIZE,
-            xorValue = 0xAEF0FFA0u
+            xorValue = 0xAEF0FFA0.toInt()
         ),
         ChecksumSegment(
             sections[Section.GIVD]!!.single() ..< sections[Section.GMTP]!!.single() - ChecksumSegment.CHECKSUM_SIZE,
-            xorValue = 0x12345678u
+            xorValue = 0x12345678
         )
     )
 
@@ -35,7 +35,7 @@ fun ByteArray.findChecksumSegments(sections: Sections): ChecksumSegments {
     val playerLoc = readPlayerLocation()
     var levelMapIndex = 0
     var firstLevelSkipped = false
-    var xorValue = 0u
+    var xorValue = 0
     for (location in 1 ..< 51) { // Last checksum is added manually
         for (level in 0 ..< 100) {
             val visited = leNum<Int>(
@@ -43,8 +43,8 @@ fun ByteArray.findChecksumSegments(sections: Sections): ChecksumSegments {
             ) != 0
             val type = leNum<Int>(levelInfoAddresses[location * 100 + level] + Section.HEADER_SIZE)
             if (visited || (
-                        // Type meaning unknown,
-                        // values copied from savadomer (https://gitlab.com/mikesc/savadomer)
+                        // Type meaning unknown, values copied from savadomer
+                        // (https://gitlab.com/mikesc/savadomer)
                         type in arrayOf(0x41, 0x42, 0x80)
                                 && location.toShort() == playerLoc.locationId
                                 && level.toShort() == playerLoc.locationLevel)
@@ -62,7 +62,7 @@ fun ByteArray.findChecksumSegments(sections: Sections): ChecksumSegments {
                 } else {
                     firstLevelSkipped = true
                 }
-                xorValue = (type * location * level).toUInt()
+                xorValue = type * location * level
             }
         }
     }
@@ -82,11 +82,11 @@ fun ByteArray.findChecksumSegments(sections: Sections): ChecksumSegments {
     result.addAll(
         ChecksumSegment(
             this.size - ChecksumSegment.CHECKSUM_SIZE * 2,
-            xorValue = 0x05afc241u
+            xorValue = 0x05AFC241
         ),
         ChecksumSegment(
             this.size - ChecksumSegment.CHECKSUM_SIZE,
-            xorValue = 0u
+            xorValue = 0
         )
     )
 

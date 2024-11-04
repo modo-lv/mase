@@ -20,7 +20,7 @@ class MaseComponentBuildSettings : Plugin<Project> {
         project.tasks.withType(KotlinCompile::class.java) {
             it.compilerOptions.apply {
                 jvmTarget.set(JvmTarget.valueOf("JVM_${project.jvmTarget}"))
-                freeCompilerArgs.add("-opt-in=kotlin.ExperimentalUnsignedTypes,kotlin.ExperimentalStdlibApi")
+                freeCompilerArgs.add("-opt-in=kotlin.ExperimentalStdlibApi")
             }
         }
         project.tasks.withType(JavaCompile::class.java) { it.targetCompatibility = project.jvmTarget }
