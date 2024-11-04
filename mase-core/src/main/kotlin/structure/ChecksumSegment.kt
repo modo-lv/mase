@@ -13,28 +13,28 @@ typealias ChecksumSegments = List<ChecksumSegment>
 /**
  * @param range Address space containing the data to calculate this checksum for.
  */
-class ChecksumSegment(val range: IntRange, val xorValue: Int) {
+class ChecksumSegment(val range: IntRange, val xorValue: UInt) {
     private val logger = KotlinLogging.logger { }
 
-    constructor(address: Int, xorValue: Int) : this(address ..< address, xorValue)
+    constructor(address: Int, xorValue: UInt) : this(address ..< address, xorValue)
 
 
-    private val _computedChecksum = SimpleObjectProperty<Int>(null)
+    private val _computedChecksum = SimpleObjectProperty<UInt>(null)
     /**
      * Stored result of the last [compute] call.
      *
      * Trying to read this before running [compute] at least once will throw an exception (see [notNull]).
      */
-    var computedChecksum: Int by delegateTo(_computedChecksum)
+    var computedChecksum: UInt by delegateTo(_computedChecksum)
 
 
-    private val _storedChecksum = SimpleObjectProperty<Int>(null)
+    private val _storedChecksum = SimpleObjectProperty<UInt>(null)
     /**
      * Checksum hash stored in the file, read during [compute].
      *
      * Trying to read this before running [compute] at least once will throw an exception (see [notNull]).
      */
-    var storedChecksum: Int by delegateTo(_storedChecksum)
+    var storedChecksum: UInt by delegateTo(_storedChecksum)
 
 
     /**
@@ -50,12 +50,12 @@ class ChecksumSegment(val range: IntRange, val xorValue: Int) {
      * @param isLast The last checksum in the file needs to get inverted.
      * @return Computed checksum.
      */
-    fun compute(lastChecksum: Int, saveData: ByteArray, isLast: Boolean = false): Int {
+    fun compute(lastChecksum: UInt, saveData: ByteArray, isLast: Boolean = false): UInt {
         logger.debug { "Computing checksums... " }
         var hash = lastChecksum
         for (address in this.range) {
             val crcIndex = saveData[address].xor(hash.toByte()).toInt().and(0xFF)
-            hash = hash.ushr(8).xor(CRC32_TABLE[crcIndex])
+            hash = hash.shr(8).xor(CRC32_TABLE[crcIndex])
         }
         hash = hash.xor(this.xorValue)
 
@@ -78,7 +78,7 @@ class ChecksumSegment(val range: IntRange, val xorValue: Int) {
      */
     fun readStored(saveData: ByteArray) =
         saveData.leNum<Int>((this.range.last + 1) + 16).also {
-            storedChecksum = it
+            storedChecksum = it.toUInt()
         }
 
 
@@ -121,6 +121,6 @@ class ChecksumSegment(val range: IntRange, val xorValue: Int) {
             0xAED16A4A, 0xD9D65ADC, 0x40DF0B66, 0x37D83BF0, 0xA9BCAE53, 0xDEBB9EC5, 0x47B2CF7F, 0x30B5FFE9,
             0xBDBDF21C, 0xCABAC28A, 0x53B39330, 0x24B4A3A6, 0xBAD03605, 0xCDD70693, 0x54DE5729, 0x23D967BF,
             0xB3667A2E, 0xC4614AB8, 0x5D681B02, 0x2A6F2B94, 0xB40BBE37, 0xC30C8EA1, 0x5A05DF1B, 0x2D02EF8D,
-        ).map { it.toInt() }
+        ).map { it.toUInt() }
     }
 }

@@ -44,7 +44,7 @@ open class SaveData<T : SaveData<T>>(val bytes: ByteArray) {
             return self
         }
 
-        checksumSegments.fold(-1) { hash, segment ->
+        checksumSegments.fold(0xFFFFFFFFu) { hash, segment ->
             segment
                 .compute(hash, bytes, isLast = segment == checksumSegments.last())
                 .xor(segment.xorValue)
@@ -61,13 +61,15 @@ open class SaveData<T : SaveData<T>>(val bytes: ByteArray) {
         checksumSegments.forEach { segment ->
             if (segment.isMismatched()) {
                 logger.debug { "Checksum [${segment.range}] is mismatched, updating..." }
-                val header = mutableListOf<Int>()
-                header.add(0, segment.computedChecksum / 50)
+                val header = mutableListOf<UInt>()
+                // ADOM's checksums are unsigned ints, which divide differently
+                header.add(0, segment.computedChecksum / 50u)
                 header.add(1, header[0] - segment.computedChecksum)
                 header.add(2, header[0] * header[1])
                 header.add(3, header[2] xor header[1])
                 header.add(4, segment.computedChecksum)
-                bytes.leWrite(segment.range.last + 1, header)
+
+                bytes.leWrite(segment.range.last + 1, header.map { it.toInt() })
                 segment.readStored(bytes)
             }
         }

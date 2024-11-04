@@ -20,11 +20,11 @@ fun ByteArray.findChecksumSegments(sections: Sections): ChecksumSegments {
     result.addAll(
         ChecksumSegment(
             0 ..< sections[Section.GIVD]!!.single() - ChecksumSegment.CHECKSUM_SIZE,
-            xorValue = 0xAEF0FFA0.toInt()
+            xorValue = 0xAEF0FFA0u
         ),
         ChecksumSegment(
             sections[Section.GIVD]!!.single() ..< sections[Section.GMTP]!!.single() - ChecksumSegment.CHECKSUM_SIZE,
-            xorValue = 0x12345678
+            xorValue = 0x12345678u
         )
     )
 
@@ -35,7 +35,7 @@ fun ByteArray.findChecksumSegments(sections: Sections): ChecksumSegments {
     val playerLoc = readPlayerLocation()
     var levelMapIndex = 0
     var firstLevelSkipped = false
-    var xorValue = 0
+    var xorValue = 0u
     for (location in 1 ..< 51) { // Last checksum is added manually
         for (level in 0 ..< 100) {
             val visited = leNum<Int>(
@@ -62,7 +62,7 @@ fun ByteArray.findChecksumSegments(sections: Sections): ChecksumSegments {
                 } else {
                     firstLevelSkipped = true
                 }
-                xorValue = type * location * level
+                xorValue = (type * location * level).toUInt()
             }
         }
     }
@@ -82,11 +82,11 @@ fun ByteArray.findChecksumSegments(sections: Sections): ChecksumSegments {
     result.addAll(
         ChecksumSegment(
             this.size - ChecksumSegment.CHECKSUM_SIZE * 2,
-            xorValue = 0x05AFC241
+            xorValue = 0x05AFC241u
         ),
         ChecksumSegment(
             this.size - ChecksumSegment.CHECKSUM_SIZE,
-            xorValue = 0
+            xorValue = 0u
         )
     )
 
