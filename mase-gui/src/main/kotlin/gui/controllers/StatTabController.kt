@@ -28,7 +28,8 @@ class StatTabController {
                     if (event.clickCount == 2) {
                         Stage(StageStyle.UTILITY).apply {
                             scene = FXMLLoader(javaClass.getResource("/gui/editor.fxml")).run {
-                                setController(EditorController(row.item))
+                                @Suppress("UNCHECKED_CAST")
+                                setController(EditorController(row.item as StatModel<Any>))
                                 load<Scene>().apply {
                                     stylesheets.add("/gui/style.css")
                                 }

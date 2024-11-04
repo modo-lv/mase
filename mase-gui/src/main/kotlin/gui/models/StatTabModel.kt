@@ -1,5 +1,7 @@
 package gui.models
 
+import javafx.beans.property.SimpleIntegerProperty
+import javafx.beans.property.SimpleLongProperty
 import javafx.beans.property.SimpleObjectProperty
 import ktfx.collections.toMutableObservableList
 
@@ -15,8 +17,16 @@ class StatTabModel {
         attributes.add(
             StatModel(
                 name = "Experience points",
-                currentValue = SimpleObjectProperty(Main.Save!!.player.character.xp),
-                _cc = { Main.Save!!.player.character.xp = it.currentValue.value }
+                currentValue = SimpleLongProperty(Main.Save!!.player.character.xp),
+                _cc = { Main.Save!!.player.character.xp = it.currentValue.value.toLong() }
+            )
+        )
+
+        attributes.add(
+            StatModel(
+                name = "Alignment",
+                currentValue = SimpleIntegerProperty(Main.Save!!.player.character.alignment),
+                _cc = { Main.Save!!.player.character.alignment = it.currentValue.value.toInt() }
             )
         )
 

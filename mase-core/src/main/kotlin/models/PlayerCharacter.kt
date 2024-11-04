@@ -12,13 +12,13 @@ class PlayerCharacter(val bytes: ByteArray) {
     /**
      * Experience points.
      */
-    var xp: ULong
-        get() = bytes.leNum<ULong>(Addresses.XP)
+    var xp: Long
+        get() = bytes.leNum<Long>(Addresses.XP)
         set(value) = bytes.leWrite(value, Addresses.XP)
 
     var alignment: Int
         get() = bytes.leNum<Int>(Addresses.ALIGNMENT)
-        set(value) = bytes.leWrite(value, Addresses.XP)
+        set(value) = bytes.leWrite(value, Addresses.ALIGNMENT)
 
     val name: String = bytes.readString(Addresses.NAME, limit = 12)
     val race: Race = bytes.leEnum<Race>(Race.ADDRESS)

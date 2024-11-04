@@ -19,7 +19,7 @@ class EditorController(val model: StatModel<*>) {
         statLabel.text = model.name
 
         val editor = FXMLLoader(javaClass.getResource("/gui/editors/single-number.fxml")).run {
-            this.setController(SingleNumberEditorController(model as StatModel<ULong>))
+            this.setController(SingleNumberEditorController(model as StatModel<Number>))
             load<Node>()
         }
         region.children.add(editor)
