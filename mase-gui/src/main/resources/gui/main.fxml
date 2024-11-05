@@ -2,7 +2,6 @@
 
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
-<?import javafx.scene.control.cell.*?>
 <?import javafx.scene.input.*?>
 <?import javafx.scene.layout.*?>
 
@@ -11,19 +10,28 @@
   <VBox prefHeight="480.0" prefWidth="640.0" stylesheets="@style.css">
     <MenuBar prefWidth="119.0">
       <Menu text="_File">
-        <MenuItem onAction="#openFile" text="_Open...">
+        <MenuItem onAction="#open" text="_Open...">
           <accelerator>
             <KeyCodeCombination alt="UP" code="O" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
           </accelerator>
         </MenuItem>
-        <MenuItem disable="true" text="_Save" />
+        <MenuItem fx:id="saveMenuItem" disable="true" onAction="#save" text="_Save">
+          <accelerator>
+            <KeyCodeCombination alt="UP" code="S" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+          </accelerator>
+        </MenuItem>
+        <MenuItem fx:id="closeMenuItem" text="_Close" onAction="#close" disable="true">
+          <accelerator>
+            <KeyCodeCombination alt="UP" code="F4" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+          </accelerator>
+        </MenuItem>
       </Menu>
     </MenuBar>
     <ToolBar>
-      <Button onAction="#openFile" text="Open..." />
+      <Button onAction="#open" text="Open..." />
       <Separator orientation="VERTICAL" />
     </ToolBar>
-    <Label styleClass="padded" text="Name, a gender race profession" fx:id="signature" />
+    <Label fx:id="signature" styleClass="padded" text="Name, a gender race profession" />
     <TabPane fx:id="mainTabs" disable="true" tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
       <fx:include source="tabs/character-tab.fxml" />
       <fx:include source="tabs/checksum-tab.fxml" />
@@ -31,7 +39,7 @@
     <HBox fx:id="footer" styleClass="padded">
       <TextField fx:id="footerFileName" editable="false" HBox.hgrow="ALWAYS" />
       <Separator orientation="VERTICAL" />
-      <Button mnemonicParsing="false" text="Save" onAction="#save" />
+      <Button mnemonicParsing="false" onAction="#save" text="Save" />
     </HBox>
   </VBox>
 </Scene>
