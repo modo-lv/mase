@@ -16,6 +16,14 @@ class StatTabModel {
 
         attributes.add(
             StatModel(
+                name = "Level",
+                currentValue = SimpleObjectProperty(Main.Save!!.player.character.level),
+                _cc = { Main.Save!!.player.character.level = it.currentValue.value }
+            )
+        )
+
+        attributes.add(
+            StatModel(
                 name = "Experience points",
                 currentValue = SimpleLongProperty(Main.Save!!.player.character.xp),
                 _cc = { Main.Save!!.player.character.xp = it.currentValue.value.toLong() }

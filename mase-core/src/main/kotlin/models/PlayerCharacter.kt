@@ -9,9 +9,10 @@ import utils.*
  * Miscellaneous player character properties -- attributes, level, xp, etc.
  */
 class PlayerCharacter(val bytes: ByteArray) {
-    /**
-     * Experience points.
-     */
+    var level: Short
+        get() = bytes.leNum<Short>(Addresses.LEVEL)
+        set(value) = bytes.leWrite(value, Addresses.LEVEL)
+
     var xp: Long
         get() = bytes.leNum<Long>(Addresses.XP)
         set(value) = bytes.leWrite(value, Addresses.XP)
@@ -30,6 +31,7 @@ class PlayerCharacter(val bytes: ByteArray) {
 
     object Addresses {
         const val NAME = 0x10
+        const val LEVEL = 0x3EE1FC
         const val XP = 0x3EE222
         const val ALIGNMENT = 0x489FAA
     }

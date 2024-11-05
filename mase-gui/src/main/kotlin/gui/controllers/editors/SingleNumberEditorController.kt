@@ -13,6 +13,7 @@ class SingleNumberEditorController(override val model: StatModel<Number>) : Edit
     fun initialize() {
         input.apply {
             valueFactory = when (model.currentValue.value) {
+                is Short -> ShortSpinner
                 is Int -> IntSpinner
                 is Long -> LongSpinner
                 else -> throw IllegalArgumentException()
@@ -24,6 +25,17 @@ class SingleNumberEditorController(override val model: StatModel<Number>) : Edit
 
     companion object {
         val IntSpinner = IntegerSpinnerValueFactory(Int.MIN_VALUE, Int.MAX_VALUE)
+        val ShortSpinner = object : SpinnerValueFactory<Short>() {
+            init {
+                converter = StringConverterBuilder<Short>().run {
+                    fromString { it.toShort() }
+                    toString { it.toString() }
+                    build()
+                }
+            }
+            override fun decrement(steps: Int) = valueProperty().set((valueProperty().get() - steps).toShort())
+            override fun increment(steps: Int) = valueProperty().set((valueProperty().get() + steps).toShort())
+        }
         val LongSpinner = object : SpinnerValueFactory<Long>() {
             init {
                 converter = StringConverterBuilder<Long>().run {
