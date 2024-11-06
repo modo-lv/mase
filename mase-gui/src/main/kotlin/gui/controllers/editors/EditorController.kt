@@ -1,10 +1,7 @@
 package gui.controllers.editors
 
-import gui.models.StatModel
-import javafx.beans.property.SimpleObjectProperty
-import javafx.beans.value.ObservableValue
-import javafx.beans.value.WritableValue
+import models.GameValue
 
 interface EditorController {
-    val model: StatModel<*>
+    val model: GameValue<Number>
 }

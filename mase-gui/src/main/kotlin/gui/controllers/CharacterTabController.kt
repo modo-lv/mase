@@ -1,7 +1,6 @@
 package gui.controllers
 
-import gui.models.StatModel
-import gui.models.StatTabModel
+import gui.models.MainModel
 import javafx.fxml.FXMLLoader
 import javafx.scene.Scene
 import javafx.scene.control.TableColumn
@@ -11,38 +10,33 @@ import javafx.scene.input.KeyCode
 import javafx.stage.Modality
 import javafx.stage.Stage
 import javafx.stage.StageStyle
+import ktfx.bindings.stringBindingBy
+import models.GameValue
 
-class StatTabController {
-    lateinit var statTable: TableView<StatModel<*>>
-    lateinit var statValue: TableColumn<StatModel<Any>, Any>
-
-    private lateinit var model: StatTabModel
+class CharacterTabController {
+    lateinit var statTable: TableView<GameValue<out Number>>
+    lateinit var statValue: TableColumn<GameValue<out Number>, String>
 
     fun initialize() {
-        model = StatTabModel().initialize()
+        statTable.items = MainModel.stats
 
         statTable.apply {
-            items = model.attributes
             setRowFactory {
-                TableRow<StatModel<*>>().apply {
+                TableRow<GameValue<out Number>>().apply {
                     setOnMouseClicked { if (it.clickCount == 2) openEditor(item) }
                 }
             }
             setOnKeyPressed { if (it.code == KeyCode.ENTER) openEditor(selectionModel.selectedItem) }
         }
 
-        statValue.setCellValueFactory { it.value.currentValue }
-
-        Main.SaveProperty.addListener { _, _, _ ->
-            model.initialize()
-        }
+        statValue.setCellValueFactory { cell -> cell.value.valueProperty.stringBindingBy { "$it" } }
     }
 
-    private fun openEditor(model: StatModel<*>) {
+    private fun openEditor(model: GameValue<*>) {
         Stage(StageStyle.UTILITY).apply {
             scene = FXMLLoader(javaClass.getResource("/gui/editor.fxml")).run {
                 @Suppress("UNCHECKED_CAST")
-                setController(EditorController(model as StatModel<Any>))
+                setController(EditorController(model as GameValue<Number>))
                 load<Scene>().apply {
                     stylesheets.add("/gui/style.css")
                 }
@@ -50,13 +44,9 @@ class StatTabController {
             initModality(Modality.APPLICATION_MODAL)
             showAndWait()
             statTable.selectionModel.selectedIndex.also {
-                refresh()
+                MainModel.reload()
                 statTable.selectionModel.select(it)
             }
         }
-    }
-
-    fun refresh() {
-        model.initialize()
     }
 }

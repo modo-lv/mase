@@ -5,6 +5,25 @@ import org.kotlincrypto.endians.LittleEndian
 import org.kotlincrypto.endians.LittleEndian.Companion.toLittleEndian
 
 /**
+ * Compare the bytes (little-endian) of this number to the bytes in a byte array.
+ */
+fun Number.equalsBytes(other: ByteArray, address: Int = 0): Boolean =
+    when (this) {
+        is Byte -> this == other[address]
+
+        is Short -> this.toLittleEndian().toByteArray()
+            .contentEquals(other.sliceArray(address .. address + 1))
+
+        is Int -> this.toLittleEndian().toByteArray()
+            .contentEquals(other.sliceArray(address .. address + 3))
+
+        is Long -> this.toLittleEndian().toByteArray()
+            .contentEquals(other.sliceArray(address .. address + 7))
+
+        else -> throw IllegalArgumentException("Unrecognized number type [${this::class.simpleName}].")
+    }
+
+/**
  * Read an enum value from this [ByteArray],
  * matching by the [WithIntId.id] property (using little-endian ordering).
  */

@@ -23,27 +23,19 @@ class MainController {
     lateinit var footer: HBox
     lateinit var footerFileName: TextField
 
-    lateinit var model: MainModel
-
     private lateinit var fileChooser: FileChooser
 
     // Called by JavaFX on init
     fun initialize() {
-        model = MainModel().initialize()
-
         saveMenuItem.disableProperty().bind(Main.SaveProperty.isNull)
         closeMenuItem.disableProperty().bind(Main.SaveProperty.isNull)
 
-        signature.textProperty().bind(model.signature)
+        signature.textProperty().bind(MainModel.signature)
 
         mainTabs.disableProperty().bind(Main.SaveProperty.isNull)
 
         footer.disableProperty().bind(Main.SaveProperty.isNull)
         footerFileName.textProperty().bind(Main.SaveProperty.stringBindingBy { it?.file?.absolutePath ?: "" })
-
-        Main.SaveProperty.addListener { _, _, _ ->
-            model.initialize()
-        }
     }
 
     fun open() {

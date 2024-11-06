@@ -2,18 +2,23 @@ package gui.models
 
 import Main
 import javafx.beans.property.SimpleStringProperty
+import ktfx.collections.toMutableObservableList
+import models.GameValue
 
-class MainModel {
+object MainModel {
     var signature = SimpleStringProperty(null)
+    val stats = mutableListOf<GameValue<out Number>>().toMutableObservableList()
 
-    fun initialize(): MainModel {
+    init {
+        Main.SaveProperty.addListener { _, _, _ -> reload() }
+        reload()
+    }
+
+    fun reload() {
         signature.set(null)
-
         if (Main.Save == null)
-            return this
-
+            return
         signature.set(Main.Save!!.player.character.signature)
-
-        return this
+        StatValueFactory.putAll(stats)
     }
 }
