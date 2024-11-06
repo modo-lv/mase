@@ -1,21 +1,21 @@
 package structure
 
-/** Sections and their starting addresses in the save this. **/
-typealias Sections = MutableMap<Section, MutableList<Int>>
+/** Chunks and their starting addresses in the save data. **/
+typealias Chunks = MutableMap<Chunk, MutableList<Int>>
 
 /**
- * Represents an ADOM section specification.
+ * Represents an ADOM save data "chunk" specification.
  *
- * An ADOM save file is separated into sections, each starting with its identifying prefix and version number.
+ * An ADOM save file is separated into chunks, each starting with its identifying prefix and version number.
  *
  * Sections are also used to determine data segments for checksum calculations.
  *
  * @param version Version number of the section.
  * @param count How many times in a row does the section repeat.
  *              `null` for sections with a variable repeat count (`LVMP`).
- * @param size If known & static.
+ * @param size Length of the chunk, excluding the header and version (if known & static).
  */
-enum class Section(
+enum class Chunk(
     val version: Int = 0x01,
     val count: Int? = 1,
     val size: Int? = null,
@@ -30,6 +30,7 @@ enum class Section(
     GSPD,
     GITD,
     GSKD,
+    PCSK(count = 41),
     GMTP,
     GMST,
     GBSS,

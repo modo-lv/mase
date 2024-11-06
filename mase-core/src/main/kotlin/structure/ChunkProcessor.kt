@@ -9,14 +9,13 @@ private val logger = KotlinLogging.logger { }
 /**
  * Reads section data from a saved game (byte array).
  */
-@OptIn(ExperimentalStdlibApi::class)
-fun ByteArray.findSections(): Sections {
-    logger.info { "Reading sections..." }
+fun ByteArray.findSections(): Chunks {
+    logger.info { "Reading chunks..." }
     var readPosition = 0
-    val result: Sections = mutableMapOf()
+    val result: Chunks = mutableMapOf()
 
-    for (section in Section.entries) {
-        logger.debug { "Looking for ${section.count ?: "all of"} [$section] section(s)..." }
+    for (section in Chunk.entries) {
+        logger.debug { "Looking for ${section.count ?: "all of"} [$section] chunk(s)..." }
         val needle =
             section.name.toByteArray(Charsets.US_ASCII) + section.version.toLittleEndian().toByteArray()
         for (count in 1 .. (section.count ?: Int.MAX_VALUE)) {
@@ -29,7 +28,7 @@ fun ByteArray.findSections(): Sections {
                 }
 
                 if (this[address] == needle[0]
-                    && address + Section.HEADER_SIZE - 1 < this.size
+                    && address + Chunk.HEADER_SIZE - 1 < this.size
                     && this[address + 1] == needle[1]
                     && this[address + 2] == needle[2]
                     && this[address + 3] == needle[3]
@@ -40,16 +39,16 @@ fun ByteArray.findSections(): Sections {
                 ) {
                     logger.trace { "Found [${section}]:${count} at ${address.toHex()}" }
                     result.getOrPut(section) { mutableListOf() }.addLast(address)
-                    readPosition = address + (section.size ?: Section.HEADER_SIZE) - 1
+                    readPosition = address + (section.size ?: Chunk.HEADER_SIZE) - 1
                     break
                 }
             }
         }
     }
-    Section.entries.find { !result.containsKey(it) }?.also {
+    Chunk.entries.find { !result.containsKey(it) }?.also {
         throw Exception("Failed to find section [${it}], version [${it.version}].")
     }
-    Section.entries.find { result[it]!!.count() != (it.count ?: result[it]!!.count()) }?.also {
+    Chunk.entries.find { result[it]!!.count() != (it.count ?: result[it]!!.count()) }?.also {
         throw Exception(
             "Section [${it}] should repeat ${it.count} times, but ${result[it]!!.count()} were found."
         )
@@ -64,7 +63,7 @@ fun ByteArray.findSections(): Sections {
                     sb.append("[${entry.value.first().toHex()}, ..](${entry.value.size})")
             }
         }
-        logger.debug { "Found all ${Section.entries.size} sections: " }
+        logger.debug { "Found all ${Chunk.entries.size} sections: " }
         if (logger.isTraceEnabled())
             logger.trace { output }
         else
@@ -72,7 +71,7 @@ fun ByteArray.findSections(): Sections {
     } else {
         logger.info {
             "Found ${result.values.sumOf { it.size }} sections (including repeated) " +
-                    "of all ${Section.entries.size} types."
+                    "of all ${Chunk.entries.size} types."
         }
     }
     return result

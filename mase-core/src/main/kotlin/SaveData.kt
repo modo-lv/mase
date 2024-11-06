@@ -18,7 +18,7 @@ open class SaveData<T : SaveData<T>>(val bytes: ByteArray) {
      *
      * Since sections don't change outside of gameplay, this only needs to be done once per save file read.
      */
-    val sections: Sections by lazy { bytes.findSections() }
+    val chunks: Chunks by lazy { bytes.findSections() }
 
     /**
      * Save game checksum segment data, automatically loaded on first access.
@@ -26,7 +26,7 @@ open class SaveData<T : SaveData<T>>(val bytes: ByteArray) {
      * Since checksum segments don't change outside of gameplay,
      * this only needs to be done once per save file read.
      */
-    val checksumSegments: ChecksumSegments by lazy { bytes.findChecksumSegments(sections) }
+    val checksumSegments: ChecksumSegments by lazy { bytes.findChecksumSegments(chunks) }
 
 
     /**
@@ -81,11 +81,11 @@ open class SaveData<T : SaveData<T>>(val bytes: ByteArray) {
         /**
          * Shorthand for getting the address of a section.
          *
-         * @param section Section to get the starting address of.
+         * @param chunk Section to get the starting address of.
          * @param addressIndex Which address to get.
          */
-        fun Sections.address(section: Section, addressIndex: Int = 0): Int {
-            return this[section]!![addressIndex]
+        fun Chunks.address(chunk: Chunk, addressIndex: Int = 0): Int {
+            return this[chunk]!![addressIndex]
         }
     }
 }

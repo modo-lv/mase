@@ -12,26 +12,26 @@ private val logger = KotlinLogging.logger { }
 /**
  * Finds checksum segments in a saved game (byte array).
  */
-fun ByteArray.findChecksumSegments(sections: Sections): ChecksumSegments {
+fun ByteArray.findChecksumSegments(chunks: Chunks): ChecksumSegments {
     logger.info { "Finding checksum segments..." }
 
     val result = mutableListOf<ChecksumSegment>()
 
     result.addAll(
         ChecksumSegment(
-            0 ..< sections[Section.GIVD]!!.single() - ChecksumSegment.CHECKSUM_SIZE,
+            0 ..< chunks[Chunk.GIVD]!!.single() - ChecksumSegment.CHECKSUM_SIZE,
             xorValue = 0xAEF0FFA0u
         ),
         ChecksumSegment(
-            sections[Section.GIVD]!!.single() ..< sections[Section.GMTP]!!.single() - ChecksumSegment.CHECKSUM_SIZE,
+            chunks[Chunk.GIVD]!!.single() ..< chunks[Chunk.GMTP]!!.single() - ChecksumSegment.CHECKSUM_SIZE,
             xorValue = 0x12345678u
         )
     )
 
 
-    val levelInfoAddresses = sections[Section.LVNF]!!
-    val levelMapAddresses = sections[Section.LVMP]!!
-    var levelChecksumStart = sections.address(Section.GMTP)
+    val levelInfoAddresses = chunks[Chunk.LVNF]!!
+    val levelMapAddresses = chunks[Chunk.LVMP]!!
+    var levelChecksumStart = chunks.address(Chunk.GMTP)
     val playerLoc = readPlayerLocation()
     var levelMapIndex = 0
     var firstLevelSkipped = false
@@ -41,7 +41,7 @@ fun ByteArray.findChecksumSegments(sections: Sections): ChecksumSegments {
             val visited = leNum<Int>(
                 Location.Addresses.LOCATION_VISITED_FLAGS_BASE + (400 * location) + (level * 4)
             ) != 0
-            val type = leNum<Int>(levelInfoAddresses[location * 100 + level] + Section.HEADER_SIZE)
+            val type = leNum<Int>(levelInfoAddresses[location * 100 + level] + Chunk.HEADER_SIZE)
             if (visited || (
                         // Type meaning unknown, values copied from savadomer
                         // (https://gitlab.com/mikesc/savadomer)
