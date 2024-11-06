@@ -1,22 +1,22 @@
 package content
 
-import content.Attribute.Addresses.BASE
-import content.Attribute.Addresses.HISTORY
-import content.Attribute.Addresses.MAX
+import content.PrimaryAttribute.Addresses.BASE
+import content.PrimaryAttribute.Addresses.HISTORY
+import content.PrimaryAttribute.Addresses.MAX
 
 /**
  * @param offset How many attributes come before this one in save data.
  */
-sealed class Attribute(val offset: Int) {
-    class Strength : Attribute(0)
-    class Learning : Attribute(1)
-    class Willpower : Attribute(2)
-    class Dexterity : Attribute(3)
-    class Toughness : Attribute(4)
-    class Charisma : Attribute(5)
-    class Appearance : Attribute(6)
-    class Mana : Attribute(7)
-    class Perception : Attribute(8)
+sealed class PrimaryAttribute(val offset: Int) {
+    class Strength : PrimaryAttribute(0)
+    class Learning : PrimaryAttribute(1)
+    class Willpower : PrimaryAttribute(2)
+    class Dexterity : PrimaryAttribute(3)
+    class Toughness : PrimaryAttribute(4)
+    class Charisma : PrimaryAttribute(5)
+    class Appearance : PrimaryAttribute(6)
+    class Mana : PrimaryAttribute(7)
+    class Perception : PrimaryAttribute(8)
 
     val baseValueAddress = BASE + (offset * 4)
     val maxValueAddress = MAX + (offset * 4)
