@@ -12,13 +12,13 @@ class ChecksumTests {
         SaveData(content).computeChecksums().checksumSegments.apply {
             size `should be equal to` 5
             map { it.computedChecksum } `should contain same` map { it.storedChecksum }
-            map { it.computedChecksum } `should contain same` listOf<Long>(
-                0x18E65772,
-                0x2D2CA30D,
-                0x49B5E299,
-                0x4C1A20B8,
-                0xB64A1D06,
-            ).map { it.toInt() }
+            map { it.computedChecksum } `should contain same` listOf(
+                0x18E65772u,
+                0x2D2CA30Du,
+                0x49B5E299u,
+                0x4C1A20B8u,
+                0xB64A1D06u,
+            )
         }
     }
 
@@ -31,13 +31,13 @@ class ChecksumTests {
         SaveData(content).apply {
             fixChecksums().checksumSegments.apply {
                 map { it.computedChecksum } `should contain same` map { it.storedChecksum }
-                map { it.computedChecksum } `should contain same` listOf<Long>(
-                    0x935789CF,
-                    0xE700DC97,
-                    0xD4EF46AE,
-                    0xD140848F,
-                    0x2B10B931,
-                ).map { it.toInt() }
+                map { it.computedChecksum } `should contain same` listOf(
+                    0x935789CFu,
+                    0xE700DC97u,
+                    0xD4EF46AEu,
+                    0xD140848Fu,
+                    0x2B10B931u,
+                )
             }
         }
     }
