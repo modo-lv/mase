@@ -9,18 +9,6 @@ import utils.*
  * Miscellaneous player character properties -- attributes, level, xp, etc.
  */
 class PlayerCharacter(val bytes: ByteArray) {
-    var level: Short
-        get() = bytes.leNum<Short>(Addresses.LEVEL)
-        set(value) = bytes.leWrite(value, Addresses.LEVEL)
-
-    var xp: Long
-        get() = bytes.leNum<Long>(Addresses.XP)
-        set(value) = bytes.leWrite(value, Addresses.XP)
-
-    var alignment: Int
-        get() = bytes.leNum<Int>(Addresses.ALIGNMENT)
-        set(value) = bytes.leWrite(value, Addresses.ALIGNMENT)
-
     val name: String = bytes.readString(Addresses.NAME, limit = 12)
     val race: Race = bytes.leEnum<Race>(Race.ADDRESS)
     val profession: Profession = bytes.leEnum<Profession>(Profession.ADDRESS)
