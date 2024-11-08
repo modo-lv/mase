@@ -13,7 +13,7 @@ typealias Chunks = MutableMap<Chunk, MutableList<Int>>
  * @param version Version number of the section.
  * @param count How many times in a row does the section repeat.
  *              `null` for sections with a variable repeat count (`LVMP`).
- * @param size Length of the chunk, excluding the header and version (if known & static).
+ * @param size If known and same for all, length of the chunk contents (excluding the header).
  */
 enum class Chunk(
     val version: Int = 0x01,
@@ -30,7 +30,7 @@ enum class Chunk(
     GSPD,
     GITD,
     GSKD,
-    PCSK(count = 41),
+    PCSK(count = 41, size = 19),
     GMTP,
     GMST,
     GBSS,

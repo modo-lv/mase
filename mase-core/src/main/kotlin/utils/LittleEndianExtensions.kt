@@ -30,6 +30,15 @@ fun Number.equalsBytes(other: ByteArray, address: Int = 0): Boolean =
 inline fun <reified T> ByteArray.leEnum(index: Int): T where T : Enum<T>, T : WithIntId =
     enumValues<T>().single { it.id == this.leNum<Int>(index) }
 
+/**
+ * Read a boolean value from ths [ByteArray].
+ */
+fun ByteArray.boolean(index: Int) = when (this[index]) {
+    0.toByte() -> false
+    1.toByte() -> true
+    else -> throw IllegalArgumentException("Can't convert [${this[index]}] to boolean.")
+}
+
 
 /**
  * Read a number from this [ByteArray], using little-endian ordering.

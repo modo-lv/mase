@@ -1,26 +1,9 @@
 package content
 
-import content.Skill.Addresses.START
-import structure.Chunk
-
 /**
- * Character's skill data.
- *
- * Each skill is in its own [Chunk.PCSK], in the [Chunk.GSKD].
- * They are saved ordered by their IDs.
- *
- * Each PCSK segment content is:
- *  [Int] ID
- *  [Int] Unknown number, usually 1
- *  [Int] Skill max delta. Skill maximum is {skill level + this + training level}.
- *  [Int] Unknown number (maybe training marks?)
- * [Byte] Skill level
- * [Byte] Training level: 1-15.
- *        Affects the maximum level and improvement dice (from [+1] to [+4d5]).
- *        The exact value of the dice for each level depends on the current skill level:
- *        as the skill value goes up, the dice levels go down. Only 0x0F is +4d5 even at 99.
+ * Skills in the game.
  */
-enum class Skill(val id: Int) {
+enum class Skill(override val id: Int) : WithIntId {
     Alertness(0x01),
     Appraising(0x02),
     Archery(0x03),
@@ -63,16 +46,4 @@ enum class Skill(val id: Int) {
     Woodcraft(0x28),
 
     Nothing(0x2A);
-
-    val startAddress = START + ((id - 1) * (Chunk.PCSK.size!! + Chunk.HEADER_SIZE))
-    val maxDeltaAddress = startAddress + 8
-    val levelAddress = maxDeltaAddress + 8
-    val trainingLevelAddress = levelAddress + 1
-
-    object Addresses {
-        /**
-         * Address of the first [Chunk.PCSK] data (skipping the header)
-         */
-        const val START = 0x0049AA9C
-    }
 }

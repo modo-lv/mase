@@ -1,5 +1,5 @@
 import io.github.oshai.kotlinlogging.KotlinLogging
-import models.Player
+import services.PlayerService
 import structure.*
 import utils.leWrite
 
@@ -32,7 +32,7 @@ open class SaveData<T : SaveData<T>>(val bytes: ByteArray) {
     /**
      * Access to player properties in the current data.
      */
-    val player: Player = Player(bytes)
+    val player: PlayerService by lazy { PlayerService(this) }
 
 
     /**
