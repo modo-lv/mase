@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.VBox?>
+
+<Tab text="Skills" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.controllers.SkillTabController">
+  <ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="200.0" prefWidth="200.0">
+    <VBox>
+      <TableView fx:id="skillTable">
+        <columns>
+          <TableColumn sortable="false" text="Name" fx:id="name" />
+          <TableColumn sortable="false" text="Proficiency" fx:id="level" />
+          <TableColumn sortable="false" text="Practical bonus" fx:id="practical" />
+          <TableColumn sortable="false" text="Theoretical bonus" fx:id="theoretical" />
+          <TableColumn sortable="false" text="Limit" fx:id="limit" />
+        </columns>
+        <columnResizePolicy>
+          <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+        </columnResizePolicy>
+      </TableView>
+    </VBox>
+  </ScrollPane>
+</Tab>

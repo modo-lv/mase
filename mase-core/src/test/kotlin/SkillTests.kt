@@ -6,12 +6,12 @@ import org.junit.jupiter.api.Test
 
 class SkillTests {
     val known = listOf(
-        PlayerSkill(type = Skill.Alertness, level = 10, trainingLevel = 8, maxDelta = 0),
-        PlayerSkill(type = Skill.Climbing, level = 32, trainingLevel = 2, maxDelta = 0),
-        PlayerSkill(type = Skill.Concentration, level = 59, trainingLevel = 9, maxDelta = 0),
-        PlayerSkill(type = Skill.Dodge, level = 12, trainingLevel = 3, maxDelta = 0),
-        PlayerSkill(type = Skill.FirstAid, level = 29, trainingLevel = 3, maxDelta = 0),
-        PlayerSkill(type = Skill.Gemology, level = 24, trainingLevel = 7, maxDelta = 0)
+        PlayerSkill(type = Skill.Alertness, level = 10, theoreticalBonus = 8, practicalBonus = 0),
+        PlayerSkill(type = Skill.Climbing, level = 32, theoreticalBonus = 2, practicalBonus = 0),
+        PlayerSkill(type = Skill.Concentration, level = 59, theoreticalBonus = 9, practicalBonus = 0),
+        PlayerSkill(type = Skill.Dodge, level = 12, theoreticalBonus = 3, practicalBonus = 0),
+        PlayerSkill(type = Skill.FirstAid, level = 29, theoreticalBonus = 3, practicalBonus = 0),
+        PlayerSkill(type = Skill.Gemology, level = 24, theoreticalBonus = 7, practicalBonus = 0)
     ).associateBy { it.type }
 
     @Test fun `Single skills read correctly`() {
@@ -43,7 +43,7 @@ class SkillTests {
 
     @Test fun `New skill is added correctly`() {
         Resources.testSave().player.skills.apply {
-            val new = PlayerSkill(type = Skill.DetectItemStatus, level = 10, trainingLevel = 0, maxDelta = 0)
+            val new = PlayerSkill(type = Skill.DetectItemStatus, level = 10, theoreticalBonus = 0, practicalBonus = 0)
             writeSkill(new)
             readSkills() `should contain` new
         }

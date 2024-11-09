@@ -5,10 +5,10 @@ import content.Skill
 data class PlayerSkill(
     val type: Skill,
     val level: Byte,
-    val trainingLevel: Byte,
-    val maxDelta: Int,
+    val practicalBonus: Int,
+    val theoreticalBonus: Byte,
 ) {
     val id = type.id
     val name = type.name
-    val maxLevel = level + maxDelta + trainingLevel
+    val maxLevel = level + practicalBonus + theoreticalBonus
 }

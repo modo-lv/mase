@@ -13,18 +13,19 @@ import java.lang.Exception
 /**
  * Reads and writes player skill values to/from save data.
  *
- * Each skill is in its own [Chunk.PCSK], in the [Chunk.GSKD]. They are saved ordered by their IDs.
+ * Each skill has its own [Chunk.PCSK] chunk, in the [Chunk.GSKD] chunk. They are saved ordered by their IDs.
  *
  * Each PCSK segment content is:
- *  [Int] ID
- *  [Int] 0 for empty slots, 1 for skills player has
- *  [Int] Skill max delta. Skill maximum is {skill level + this + training level}.
- *  [Int] Unknown number (maybe training marks?)
- * [Byte] Skill level
- * [Byte] Training level: 1-15.
- *        Affects the maximum level and improvement dice (from [+1] to [+4d5]).
- *        The exact value of the dice for each level depends on the current skill level:
- *        as the skill value goes up, the dice levels go down. Only 0x0F is +4d5 even at 99.
+ * 1.  [Int] ID (see [Skill.id])
+ * 2.  [Int] 0 for empty slots, 1 for skills player has
+ * 3.  [Int] See [PlayerSkill.practicalBonus]. Skill maximum is {skill level + this + training level}.
+ *           Also determines how likely the skill is to increase between level-ups.
+ * 4.  [Int] Unknown number (maybe training marks?)
+ * 5. [Byte] Skill level
+ * 6. [Byte] See [PlayerSkill.theoreticalBonus], 1-15.
+ *           Affects the maximum level and improvement dice (from [+1] to [+4d5]).
+ *           The exact value of the dice for each level depends on the current skill level:
+ *           as the skill value goes up, the dice levels go down. Only level 15 is +4d5 even at 99.
  */
 class SkillService(val save: SaveData<*>) {
     val addresses = save.chunks[Chunk.PCSK].takeUnless { it.isNullOrEmpty() }
@@ -41,9 +42,9 @@ class SkillService(val save: SaveData<*>) {
             return null
         return PlayerSkill(
             type = save.bytes.leEnum<Skill>(this),
-            maxDelta = save.bytes.leNum<Int>(this + 8),
+            practicalBonus = save.bytes.leNum<Int>(this + 8),
             level = save.bytes[this + 16],
-            trainingLevel = save.bytes[this + 17],
+            theoreticalBonus = save.bytes[this + 17],
         )
     }
 
@@ -67,8 +68,8 @@ class SkillService(val save: SaveData<*>) {
                         PlayerSkill(
                             type = it,
                             level = -1,
-                            trainingLevel = -1,
-                            maxDelta = 0
+                            theoreticalBonus = -1,
+                            practicalBonus = 0
                         )
                     }
             else acquired
@@ -83,8 +84,8 @@ class SkillService(val save: SaveData<*>) {
     fun writeSkill(skill: PlayerSkill) {
         val address = addresses.first { save.bytes.leEnum<Skill>(it) in setOf(skill.type, Skill.Nothing) }
 
-        save.bytes.leWrite(address, listOf(skill.id, 1, skill.maxDelta))
+        save.bytes.leWrite(address, listOf(skill.id, 1, skill.practicalBonus))
         save.bytes[address + 16] = skill.level
-        save.bytes[address + 17] = skill.trainingLevel
+        save.bytes[address + 17] = skill.theoreticalBonus
     }
 }

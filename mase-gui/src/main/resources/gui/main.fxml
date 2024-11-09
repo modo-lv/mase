@@ -34,6 +34,7 @@
     <Label fx:id="signature" styleClass="padded" text="Name, a gender race profession" />
     <TabPane fx:id="mainTabs" disable="true" tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
       <fx:include source="tabs/character-tab.fxml" />
+      <fx:include source="tabs/skill-tab.fxml" />
       <fx:include source="tabs/checksum-tab.fxml" />
     </TabPane>
     <HBox fx:id="footer" styleClass="padded">
