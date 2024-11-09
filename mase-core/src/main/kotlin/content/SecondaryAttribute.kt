@@ -1,6 +1,8 @@
 package content
 
 enum class SecondaryAttribute(val baseAddress: Int) {
+    CarryingCapacity(0x00489F3E),
+
     /**
      * Signed integer, but the final value (base + modifiers) in game has a minimum of 10.
      *
