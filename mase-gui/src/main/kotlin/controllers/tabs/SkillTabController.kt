@@ -1,9 +1,7 @@
-package controllers
+package controllers.tabs
 
 import javafx.scene.control.TableColumn
 import javafx.scene.control.TableView
-import ktfx.bindings.stringBindingBy
-import ktfx.bindings.stringBindingOf
 import models.MainModel
 import models.values.SkillValue
 

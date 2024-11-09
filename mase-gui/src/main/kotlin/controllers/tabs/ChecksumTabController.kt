@@ -1,4 +1,4 @@
-package controllers
+package controllers.tabs
 
 import Main
 import javafx.beans.property.SimpleStringProperty

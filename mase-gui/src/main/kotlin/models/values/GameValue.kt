@@ -17,7 +17,12 @@ import utils.leWrite
  * @param value Initial value.
  * @param TNum What numeric type this value is -- [Byte], [Short], [Int] or [Long].
  */
-open class GameValue<TNum : Number>(val save: SaveData<*>, val name: String, val address: Int, value: TNum) {
+open class GameValue<TNum : Number>(
+    val save: SaveData<*>,
+    override val name: String,
+    val address: Int,
+    value: TNum
+): ValueModel {
 
     val valueProperty = SimpleObjectProperty(value)
     val value: TNum by delegateTo(valueProperty)
@@ -40,7 +45,7 @@ open class GameValue<TNum : Number>(val save: SaveData<*>, val name: String, val
     /**
      * Writes this value to the save data byte array and updates [commitEventDispatch].
      */
-    fun commit() {
+    override fun commit() {
         if (value.equalsBytes(save.bytes, address))
             return
         writeData()

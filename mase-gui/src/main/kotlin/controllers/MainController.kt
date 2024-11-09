@@ -1,16 +1,17 @@
 package controllers
 
 import Main
+import javafx.fxml.FXMLLoader
 import models.MainModel
 import models.SaveFileModel
 import javafx.scene.Scene
-import javafx.scene.control.Label
-import javafx.scene.control.MenuItem
-import javafx.scene.control.TabPane
-import javafx.scene.control.TextField
+import javafx.scene.control.*
 import javafx.scene.layout.HBox
 import javafx.stage.FileChooser
 import javafx.stage.FileChooser.ExtensionFilter
+import javafx.stage.Modality
+import javafx.stage.Stage
+import javafx.stage.StageStyle
 import ktfx.bindings.stringBindingBy
 import utils.Adom
 
@@ -61,5 +62,24 @@ class MainController {
 
     fun close() {
         Main.Save = null
+    }
+
+    companion object {
+        fun openEditor(table: TableView<*>, controller: Any) {
+            Stage(StageStyle.UTILITY).apply {
+                scene = FXMLLoader(javaClass.getResource("/gui/editor.fxml")).run {
+                    setController(controller)
+                    load<Scene>().apply {
+                        stylesheets.add("/gui/style.css")
+                    }
+                }
+                initModality(Modality.APPLICATION_MODAL)
+                showAndWait()
+                table.selectionModel.selectedIndex.also {
+                    MainModel.reload()
+                    table.selectionModel.select(it)
+                }
+            }
+        }
     }
 }

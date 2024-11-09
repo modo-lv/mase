@@ -3,7 +3,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.VBox?>
 
-<Tab text="Skills" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.SkillTabController">
+<Tab text="Skills" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.tabs.SkillTabController">
   <ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="200.0" prefWidth="200.0">
     <VBox>
       <TableView fx:id="skillTable" VBox.vgrow="ALWAYS">

@@ -1,6 +1,5 @@
-package controllers
+package controllers.editors
 
-import controllers.editors.SingleNumberEditorController
 import javafx.event.ActionEvent
 import javafx.fxml.FXMLLoader
 import javafx.scene.Node
@@ -9,8 +8,10 @@ import javafx.scene.control.Label
 import javafx.scene.layout.StackPane
 import ktfx.windows.stage
 import models.values.GameValue
+import models.values.ValueModel
+import java.lang.IllegalArgumentException
 
-class EditorController(val model: GameValue<Number>) {
+class EditorContainerController<T : ValueModel>(val model: T) {
     lateinit var editorScene: Scene
     lateinit var region: StackPane
     lateinit var statLabel: Label
@@ -18,10 +19,17 @@ class EditorController(val model: GameValue<Number>) {
     fun initialize() {
         statLabel.text = model.name
 
-        val editor = FXMLLoader(javaClass.getResource("/gui/editors/single-number.fxml")).run {
-            this.setController(SingleNumberEditorController(model))
-            load<Node>()
+        val loader = when (model) {
+            is GameValue<*> ->
+                FXMLLoader(javaClass.getResource("/gui/editors/single-number.fxml")).apply {
+                    @Suppress("UNCHECKED_CAST")
+                    this.setController(SingleNumberEditorController(model as GameValue<Number>))
+                }
+
+            else -> throw IllegalArgumentException("Unknown model type [${model::class.simpleName}].")
         }
+        val editor = loader.load<Node>()
+
         region.children.add(editor)
     }
 

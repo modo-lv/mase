@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<HBox alignment="CENTER" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/17.0.2-ea"
+      xmlns:fx="http://javafx.com/fxml/1">
+  <CheckBox fx:id="acquired" text="Acquired:" />
+  <Spinner fx:id="level" editable="true" />
+  <Spinner fx:id="practical" editable="true" />
+  <Spinner fx:id="theoretical" editable="true" />
+</HBox>

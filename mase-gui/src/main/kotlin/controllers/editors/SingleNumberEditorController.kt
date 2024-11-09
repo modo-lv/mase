@@ -5,7 +5,7 @@ import javafx.application.Platform
 import javafx.scene.control.Spinner
 import models.values.GameValue
 
-class SingleNumberEditorController(override val model: GameValue<Number>) : EditorController {
+class SingleNumberEditorController(val model: GameValue<Number>) {
     lateinit var input: Spinner<Number>
 
     fun initialize() {
