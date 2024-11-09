@@ -1,6 +1,6 @@
-package gui.controllers.editors
+package controllers.editors
 
-import gui.components.spinner.NumericSpinnerValueFactory
+import components.NumericSpinnerValueFactory
 import javafx.application.Platform
 import javafx.scene.control.Spinner
 import models.GameValue

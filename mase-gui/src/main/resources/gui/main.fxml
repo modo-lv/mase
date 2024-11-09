@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.*?>
 
 <Scene fx:id="mainScene" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1"
-       fx:controller="gui.controllers.MainController">
+       fx:controller="controllers.MainController">
   <VBox prefHeight="480.0" prefWidth="640.0" stylesheets="@style.css">
     <MenuBar prefWidth="119.0">
       <Menu text="_File">

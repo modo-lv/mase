@@ -1,4 +1,4 @@
-package gui.controllers
+package controllers
 
 import Main
 import javafx.beans.property.SimpleStringProperty

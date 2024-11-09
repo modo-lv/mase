@@ -3,7 +3,7 @@
 <?import javafx.scene.layout.VBox?>
 
 <Tab text="Checksums" fx:id="checksumTab" xmlns:fx="http://javafx.com/fxml/1"
-     fx:controller="gui.controllers.ChecksumTabController"
+     fx:controller="controllers.ChecksumTabController"
      onSelectionChanged="#handleSelectionChange"
 >
   <VBox prefHeight="200.0" prefWidth="100.0">

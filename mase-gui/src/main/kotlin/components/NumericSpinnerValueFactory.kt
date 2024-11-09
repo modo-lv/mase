@@ -1,4 +1,4 @@
-package gui.components.spinner
+package components
 
 import javafx.scene.control.SpinnerValueFactory
 import ktfx.text.StringConverterBuilder

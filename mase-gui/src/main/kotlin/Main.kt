@@ -1,4 +1,4 @@
-import gui.models.SaveFileModel
+import models.SaveFileModel
 import javafx.application.Application
 import javafx.beans.property.SimpleObjectProperty
 import javafx.fxml.FXMLLoader

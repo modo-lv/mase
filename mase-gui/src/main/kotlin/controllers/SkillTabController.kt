@@ -1,4 +1,4 @@
-package gui.controllers
+package controllers
 
 import javafx.scene.control.TableColumn
 import javafx.scene.control.TableView

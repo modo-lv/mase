@@ -1,6 +1,6 @@
-package gui.controllers
+package controllers
 
-import gui.controllers.editors.SingleNumberEditorController
+import controllers.editors.SingleNumberEditorController
 import javafx.event.ActionEvent
 import javafx.fxml.FXMLLoader
 import javafx.scene.Node

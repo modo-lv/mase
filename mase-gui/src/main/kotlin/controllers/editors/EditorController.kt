@@ -1,4 +1,4 @@
-package gui.controllers.editors
+package controllers.editors
 
 import models.GameValue
 

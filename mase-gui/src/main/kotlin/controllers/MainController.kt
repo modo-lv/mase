@@ -1,8 +1,8 @@
-package gui.controllers
+package controllers
 
 import Main
-import gui.models.MainModel
-import gui.models.SaveFileModel
+import models.MainModel
+import models.SaveFileModel
 import javafx.scene.Scene
 import javafx.scene.control.Label
 import javafx.scene.control.MenuItem

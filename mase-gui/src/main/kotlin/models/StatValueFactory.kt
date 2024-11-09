@@ -1,12 +1,9 @@
-package gui.models
+package models
 
 import Main
-import content.SecondaryAttribute
 import content.SecondaryAttribute.CarryingCapacity
 import content.SecondaryAttribute.Speed
 import javafx.collections.ObservableList
-import models.PlayerCharacter
-import models.GameValue
 import models.GameValue.Companion.gameValue
 
 object StatValueFactory {

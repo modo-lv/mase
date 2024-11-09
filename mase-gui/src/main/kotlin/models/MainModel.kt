@@ -1,9 +1,8 @@
-package gui.models
+package models
 
 import Main
 import javafx.beans.property.SimpleStringProperty
 import ktfx.collections.toMutableObservableList
-import models.GameValue
 
 object MainModel {
     var signature = SimpleStringProperty(null)
