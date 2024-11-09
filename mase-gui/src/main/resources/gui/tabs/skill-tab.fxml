@@ -8,11 +8,26 @@
     <VBox>
       <TableView fx:id="skillTable" VBox.vgrow="ALWAYS">
         <columns>
-          <TableColumn sortable="false" text="Name" fx:id="name" />
-          <TableColumn sortable="false" text="Proficiency" fx:id="level" />
-          <TableColumn sortable="false" text="Practical bonus" fx:id="practical" />
-          <TableColumn sortable="false" text="Theoretical bonus" fx:id="theoretical" />
-          <TableColumn sortable="false" text="Limit" fx:id="limit" />
+          <TableColumn reorderable="false" sortable="false" text="Name" fx:id="name"
+                       prefWidth="${skillTable.width * 0.20}" />
+          <TableColumn reorderable="false" sortable="false" text="Lvl." fx:id="level"
+                       prefWidth="${skillTable.width * 0.05}" styleClass="numeric" />
+          <TableColumn reorderable="false" sortable="false" text="Advancement">
+            <columns>
+              <TableColumn reorderable="false" sortable="false" text="Level" styleClass="numeric"
+                           fx:id="advancementLevel" />
+              <TableColumn reorderable="false" sortable="false" text="Dice" styleClass="computed"
+                           fx:id="advancementDice" />
+            </columns>
+          </TableColumn>
+          <TableColumn reorderable="false" sortable="false" text="Max" fx:id="max" styleClass="numeric, computed" />
+          <TableColumn text="Training">
+            <columns>
+              <TableColumn reorderable="false" sortable="false" text="Passive" fx:id="inactive"
+                           styleClass="numeric" />
+              <TableColumn reorderable="false" sortable="false" text="Active" fx:id="active" styleClass="numeric" />
+            </columns>
+          </TableColumn>
         </columns>
         <columnResizePolicy>
           <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />

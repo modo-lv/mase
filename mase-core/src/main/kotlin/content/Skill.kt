@@ -1,9 +1,10 @@
 package content
 
 /**
- * Skills in the game.
+ * ADOM skill type.
  */
 enum class Skill(override val id: Int) : WithIntId {
+    Alchemy(0x00),
     Alertness(0x01),
     Appraising(0x02),
     Archery(0x03),

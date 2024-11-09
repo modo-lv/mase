@@ -15,7 +15,7 @@ class PlayerCharacter(val bytes: ByteArray) {
     val gender: Gender = bytes.leEnum<Gender>(Gender.ADDRESS)
 
     val signature =
-        "$name, a ${gender.toSentenceString()} ${race.toSentenceString()} ${profession.toSentenceString()}"
+        "$name, a ${gender.toSignatureString()} ${race.toSignatureString()} ${profession.toSignatureString()}"
 
     object Addresses {
         const val NAME = 0x10

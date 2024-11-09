@@ -1,29 +1,46 @@
 package models.values
 
+import SaveData
 import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleObjectProperty
 import javafx.beans.property.SimpleStringProperty
-import ktfx.bindings.bindingOf
+import ktfx.bindings.booleanBindingOf
 import models.PlayerSkill
+import models.PlayerSkill.State.Available
 import utils.ObservableDelegates.delegateTo
 
-class SkillValue(underlying: PlayerSkill) {
+class SkillValue(
+    val save: SaveData<*>,
+    val underlying: PlayerSkill,
+) : ValueModel {
     val nameProperty = SimpleStringProperty(underlying.name)
-    val name: String by delegateTo(nameProperty)
+    override val name: String by delegateTo(nameProperty)
 
-    val acquiredProperty = SimpleBooleanProperty(underlying.acquired)
-    val acquired: Boolean by delegateTo(acquiredProperty)
+    val stateProperty = SimpleObjectProperty(underlying.state)
+    var state: PlayerSkill.State by delegateTo(stateProperty)
 
     val levelProperty = SimpleObjectProperty(underlying.level)
-    val level: Byte by delegateTo(levelProperty)
+    var level: Byte by delegateTo(levelProperty)
 
-    val practicalProperty = SimpleObjectProperty(underlying.practicalBonus)
-    val practical: Int by delegateTo(practicalProperty)
+    val inactiveTrainingProperty = SimpleObjectProperty(underlying.inactiveTraining)
+    var inactiveTraining: Int by delegateTo(inactiveTrainingProperty)
 
-    val theoreticalProperty = SimpleObjectProperty(underlying.theoreticalBonus)
-    var theoretical: Byte by delegateTo(theoreticalProperty)
+    val activeTrainingProperty = SimpleObjectProperty(underlying.activeTraining)
+    var activeTraining: Int by delegateTo(activeTrainingProperty)
 
-    val limitProperty = bindingOf(levelProperty, practicalProperty, theoreticalProperty) {
-        (level + practical + theoretical).coerceIn(0..100)
+    val advancementLevelProperty = SimpleObjectProperty(underlying.advancement)
+    var advancementLevel: Byte by delegateTo(advancementLevelProperty)
+
+    val isAvailableProperty = SimpleBooleanProperty(underlying.isAvailable)
+    val isAvailable: Boolean by delegateTo(isAvailableProperty)
+
+    override fun commit() {
+        underlying.state = state
+        underlying.level = level
+        underlying.inactiveTraining = inactiveTraining
+        underlying.advancement = advancementLevel
+        underlying.activeTraining = activeTraining
+
+        save.player.skills.writeSkill(underlying)
     }
 }

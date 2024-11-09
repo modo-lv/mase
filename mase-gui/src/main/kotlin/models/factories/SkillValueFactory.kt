@@ -14,10 +14,11 @@ object SkillValueFactory {
         if (Main.Save == null) return
 
         Main.Save!!.player.skills.readSkills(includeMissing = true)
-            .sortedWith(compareByDescending<PlayerSkill> { it.acquired }.thenBy { it.name })
+            .sortedWith(compareByDescending<PlayerSkill> { it.isAvailable }.thenBy { it.name })
             .forEach { skill ->
                 skillList.add(
                     SkillValue(
+                        save = Main.Save!!,
                         underlying = skill
                     )
                 )

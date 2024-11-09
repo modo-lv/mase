@@ -1,9 +1,9 @@
-import models.SaveFileModel
 import javafx.application.Application
 import javafx.beans.property.SimpleObjectProperty
 import javafx.fxml.FXMLLoader
 import javafx.scene.Scene
 import javafx.stage.Stage
+import models.SaveFileModel
 import utils.ObservableDelegates.delegateTo
 import java.io.File
 

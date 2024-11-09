@@ -39,7 +39,7 @@ open class GameValue<TNum : Number>(
      * Does not write to any actual files, only the in-memory byte array of [save].
      */
     protected fun writeData() {
-        save.bytes.leWrite(value, address)
+        save.bytes.leWrite(address, value)
     }
 
     /**

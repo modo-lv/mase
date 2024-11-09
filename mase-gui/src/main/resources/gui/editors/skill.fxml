@@ -5,8 +5,17 @@
 
 <HBox alignment="CENTER" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/17.0.2-ea"
       xmlns:fx="http://javafx.com/fxml/1">
-  <CheckBox fx:id="acquired" text="Acquired:" />
+  <fx:define>
+    <ToggleGroup fx:id="state" />
+  </fx:define>
+
+  <VBox>
+    <RadioButton text="_Available" toggleGroup="${state}" fx:id="stateAvailable" />
+    <RadioButton text="_Not available" toggleGroup="${state}" fx:id="stateNotAvailable" />
+  </VBox>
+
   <Spinner fx:id="level" editable="true" />
   <Spinner fx:id="practical" editable="true" />
   <Spinner fx:id="theoretical" editable="true" />
+  <Spinner fx:id="marks" editable="true" />
 </HBox>

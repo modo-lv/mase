@@ -11,7 +11,17 @@ fun ByteArray.readString(index: Int, limit: Int = 256): String = this
     .toString(Charsets.US_ASCII)
 
 
+fun Enum<*>.toSignatureString() = this
+    .toSentenceString()
+    .lowercase()
+
 fun Enum<*>.toSentenceString() = this
     .name
     .replace("(.)([A-Z])".toRegex(), "$1 $2")
-    .lowercase()
+
+
+fun IntRange.toDisplayString() =
+    if (this.first == this.last)
+        "${this.last}"
+    else
+        "${this}"

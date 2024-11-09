@@ -39,6 +39,16 @@ fun ByteArray.boolean(index: Int) = when (this[index]) {
     else -> throw IllegalArgumentException("Can't convert [${this[index]}] to boolean.")
 }
 
+inline fun <reified T: Number> Boolean.toLeNum(): Number = (if (this) 1 else 0).let {
+    when (T::class) {
+        Byte::class -> it.toByte()
+        Short::class -> it.toShort()
+        Int::class -> it.toInt()
+        Long::class -> it.toLong()
+        else -> throw IllegalArgumentException("Unrecognized number type [${T::class.simpleName}]")
+    }
+}
+
 
 /**
  * Read a number from this [ByteArray], using little-endian ordering.
@@ -64,22 +74,23 @@ inline fun <reified T : Number> ByteArray.leNum(index: Int): T {
  * Write the bytes of multiple sequential numbers into this [ByteArray], in little-endian order.
  */
 fun ByteArray.leWrite(startAt: Int, values: List<Number>) {
-    values.forEachIndexed { i, value ->
-        val length = when (value) {
+    var address = startAt
+    values.forEach { value ->
+        leWrite(address, value)
+        address += when (value) {
             is Byte -> 1
             is Short -> 2
             is Int -> 4
             is Long -> 8
             else -> throw IllegalArgumentException("Unrecognized number type: ${value.javaClass}")
         }
-        leWrite(value, startAt + (i * length))
     }
 }
 
 /**
  * Write the bytes of a number into this [ByteArray], in little-endian order.
  */
-fun ByteArray.leWrite(value: Number, index: Int) {
+fun ByteArray.leWrite(index: Int, value: Number) {
     when (value) {
         is Byte -> this[index] = value
         is Short -> value.toLittleEndian().copyInto(this, index)

@@ -8,6 +8,7 @@ import javafx.scene.control.Label
 import javafx.scene.layout.StackPane
 import ktfx.windows.stage
 import models.values.GameValue
+import models.values.SkillValue
 import models.values.ValueModel
 import java.lang.IllegalArgumentException
 
@@ -24,6 +25,10 @@ class EditorContainerController<T : ValueModel>(val model: T) {
                 FXMLLoader(javaClass.getResource("/gui/editors/single-number.fxml")).apply {
                     @Suppress("UNCHECKED_CAST")
                     this.setController(SingleNumberEditorController(model as GameValue<Number>))
+                }
+            is SkillValue ->
+                FXMLLoader(javaClass.getResource("/gui/editors/skill.fxml")).apply {
+                    this.setController(SkillEditorController(model))
                 }
 
             else -> throw IllegalArgumentException("Unknown model type [${model::class.simpleName}].")

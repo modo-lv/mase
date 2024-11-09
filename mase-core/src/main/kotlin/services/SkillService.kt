@@ -3,11 +3,9 @@ package services
 import SaveData
 import content.Skill
 import models.PlayerSkill
+import models.PlayerSkill.State.NotAvailable
 import structure.Chunk
-import utils.boolean
-import utils.leEnum
-import utils.leNum
-import utils.leWrite
+import utils.*
 import java.lang.Exception
 
 /**
@@ -18,14 +16,13 @@ import java.lang.Exception
  * Each PCSK segment content is:
  * 1.  [Int] ID (see [Skill.id])
  * 2.  [Int] 0 for empty slots, 1 for skills player has
- * 3.  [Int] Unknown number (maybe training marks?)
- * 4.  [Int] See [PlayerSkill.practicalBonus]. Skill maximum is {skill level + this + training level}.
- *           Also determines how likely the skill is to increase between level-ups.
+ * 3.  [Int] See [PlayerSkill.activeTraining]. Seems to go up in steps of 4, at least for some skills.
+ * 4.  [Int] See [PlayerSkill.inactiveTraining].
  * 5. [Byte] Skill level
- * 6. [Byte] See [PlayerSkill.theoreticalBonus], 1-15.
+ * 6. [Byte] See [PlayerSkill.advancement], 1-15.
  *           Affects the maximum level and improvement dice (from [+1] to [+4d5]).
- *           The exact value of the dice for each level depends on the current skill level:
- *           as the skill value goes up, the dice levels go down. Only level 15 is +4d5 even at 99.
+ *           The exact value of the dice for each level depends on the current skill level and profession.
+ *           As the skill value goes up, the dice go down. Only level 15 is +4d5 even at 99.
  */
 class SkillService(val save: SaveData<*>) {
     val addresses = save.chunks[Chunk.PCSK].takeUnless { it.isNullOrEmpty() }
@@ -37,15 +34,15 @@ class SkillService(val save: SaveData<*>) {
      */
     fun Int.addressToSkill(requiredType: Skill? = null): PlayerSkill? {
         val type = save.bytes.leEnum<Skill>(this)
-        val playerHas = save.bytes.boolean(this + 4)
-        if (type != (requiredType ?: type) || type == Skill.Nothing || !playerHas)
+        if (type != (requiredType ?: type) || type == Skill.Nothing)
             return null
         return PlayerSkill(
             type = save.bytes.leEnum<Skill>(this),
-            acquired = true,
-            practicalBonus = save.bytes.leNum<Int>(this + 12),
+            state = save.bytes.leEnum<PlayerSkill.State>(this + 4),
+            activeTraining = save.bytes.leNum<Int>(this + 8),
+            inactiveTraining = save.bytes.leNum<Int>(this + 12),
             level = save.bytes[this + 16],
-            theoreticalBonus = save.bytes[this + 17],
+            advancement = save.bytes[this + 17],
         )
     }
 
@@ -68,10 +65,11 @@ class SkillService(val save: SaveData<*>) {
                     .map {
                         PlayerSkill(
                             type = it,
-                            acquired = false,
+                            state = NotAvailable,
                             level = -1,
-                            theoreticalBonus = -1,
-                            practicalBonus = 0
+                            advancement = -1,
+                            inactiveTraining = 0,
+                            activeTraining = 0,
                         )
                     }
             else acquired
@@ -86,8 +84,15 @@ class SkillService(val save: SaveData<*>) {
     fun writeSkill(skill: PlayerSkill) {
         val address = addresses.first { save.bytes.leEnum<Skill>(it) in setOf(skill.type, Skill.Nothing) }
 
-        save.bytes.leWrite(address, listOf(skill.id, 1, skill.practicalBonus))
-        save.bytes[address + 16] = skill.level
-        save.bytes[address + 17] = skill.theoreticalBonus
+        save.bytes.leWrite(
+            address, listOf(
+                skill.id,
+                skill.state.id,
+                skill.activeTraining,
+                skill.inactiveTraining,
+                skill.level,
+                skill.advancement
+            )
+        )
     }
 }
