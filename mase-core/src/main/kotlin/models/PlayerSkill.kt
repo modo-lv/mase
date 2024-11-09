@@ -4,6 +4,7 @@ import content.Skill
 
 data class PlayerSkill(
     val type: Skill,
+    val acquired: Boolean = true,
     val level: Byte,
     val practicalBonus: Int,
     val theoreticalBonus: Byte,

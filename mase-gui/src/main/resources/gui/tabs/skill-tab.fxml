@@ -6,7 +6,7 @@
 <Tab text="Skills" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.SkillTabController">
   <ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="200.0" prefWidth="200.0">
     <VBox>
-      <TableView fx:id="skillTable">
+      <TableView fx:id="skillTable" VBox.vgrow="ALWAYS">
         <columns>
           <TableColumn sortable="false" text="Name" fx:id="name" />
           <TableColumn sortable="false" text="Proficiency" fx:id="level" />

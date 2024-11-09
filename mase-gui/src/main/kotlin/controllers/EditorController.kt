@@ -8,7 +8,7 @@ import javafx.scene.Scene
 import javafx.scene.control.Label
 import javafx.scene.layout.StackPane
 import ktfx.windows.stage
-import models.GameValue
+import models.values.GameValue
 
 class EditorController(val model: GameValue<Number>) {
     lateinit var editorScene: Scene

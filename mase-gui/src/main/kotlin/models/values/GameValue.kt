@@ -1,4 +1,4 @@
-package models
+package models.values
 
 import SaveData
 import javafx.beans.property.SimpleBooleanProperty

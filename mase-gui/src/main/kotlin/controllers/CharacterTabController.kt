@@ -11,7 +11,7 @@ import javafx.stage.Modality
 import javafx.stage.Stage
 import javafx.stage.StageStyle
 import ktfx.bindings.stringBindingBy
-import models.GameValue
+import models.values.GameValue
 
 class CharacterTabController {
     lateinit var statTable: TableView<GameValue<out Number>>

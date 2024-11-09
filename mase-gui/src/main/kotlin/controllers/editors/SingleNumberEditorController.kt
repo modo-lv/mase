@@ -3,7 +3,7 @@ package controllers.editors
 import components.NumericSpinnerValueFactory
 import javafx.application.Platform
 import javafx.scene.control.Spinner
-import models.GameValue
+import models.values.GameValue
 
 class SingleNumberEditorController(override val model: GameValue<Number>) : EditorController {
     lateinit var input: Spinner<Number>

@@ -1,6 +1,6 @@
 package controllers.editors
 
-import models.GameValue
+import models.values.GameValue
 
 interface EditorController {
     val model: GameValue<Number>

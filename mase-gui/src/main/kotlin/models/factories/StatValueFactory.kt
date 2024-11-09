@@ -1,10 +1,12 @@
-package models
+package models.factories
 
 import Main
 import content.SecondaryAttribute.CarryingCapacity
 import content.SecondaryAttribute.Speed
 import javafx.collections.ObservableList
-import models.GameValue.Companion.gameValue
+import models.PlayerCharacter
+import models.values.GameValue
+import models.values.GameValue.Companion.gameValue
 
 object StatValueFactory {
     /**

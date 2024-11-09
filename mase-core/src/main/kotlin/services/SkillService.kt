@@ -18,9 +18,9 @@ import java.lang.Exception
  * Each PCSK segment content is:
  * 1.  [Int] ID (see [Skill.id])
  * 2.  [Int] 0 for empty slots, 1 for skills player has
- * 3.  [Int] See [PlayerSkill.practicalBonus]. Skill maximum is {skill level + this + training level}.
+ * 3.  [Int] Unknown number (maybe training marks?)
+ * 4.  [Int] See [PlayerSkill.practicalBonus]. Skill maximum is {skill level + this + training level}.
  *           Also determines how likely the skill is to increase between level-ups.
- * 4.  [Int] Unknown number (maybe training marks?)
  * 5. [Byte] Skill level
  * 6. [Byte] See [PlayerSkill.theoreticalBonus], 1-15.
  *           Affects the maximum level and improvement dice (from [+1] to [+4d5]).
@@ -42,7 +42,8 @@ class SkillService(val save: SaveData<*>) {
             return null
         return PlayerSkill(
             type = save.bytes.leEnum<Skill>(this),
-            practicalBonus = save.bytes.leNum<Int>(this + 8),
+            acquired = true,
+            practicalBonus = save.bytes.leNum<Int>(this + 12),
             level = save.bytes[this + 16],
             theoreticalBonus = save.bytes[this + 17],
         )
@@ -67,6 +68,7 @@ class SkillService(val save: SaveData<*>) {
                     .map {
                         PlayerSkill(
                             type = it,
+                            acquired = false,
                             level = -1,
                             theoreticalBonus = -1,
                             practicalBonus = 0
