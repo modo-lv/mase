@@ -41,8 +41,15 @@ object SkillAdvancement {
     }
 
 
-
     init {
+        add(Profession.Fighter, mapOf(
+            Dice.`1d3` to setOf(
+                Alertness, Archery, BridgeBuilding, Courage, DetectTraps, DisarmTraps, FindWeakness,
+                Fletchery, FoodPreservation, Haggling, Herbalism, Listening, Metallurgy, Mining,
+                Survival, Swimming, Tactics, Woodcraft
+            )
+        ))
+
         add(Profession.Ranger, mapOf(
             Dice.`1d3` to setOf(
                 Archery, Backstabbing, BridgeBuilding, Concentration,
