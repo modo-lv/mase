@@ -1,16 +1,11 @@
 package models
 
 import Main
-import SaveData
 import content.Profession
 import javafx.beans.property.SimpleListProperty
-import javafx.beans.property.SimpleMapProperty
 import javafx.beans.property.SimpleObjectProperty
-import javafx.beans.property.SimpleStringProperty
 import javafx.collections.ObservableList
-import javafx.collections.ObservableMap
 import ktfx.collections.mutableObservableListOf
-import ktfx.collections.observableListOf
 import ktfx.collections.toMutableObservableList
 import models.factories.SkillValueFactory
 import models.factories.StatValueFactory
@@ -24,7 +19,7 @@ object MainModel {
     val skills = mutableListOf<SkillValue>().toMutableObservableList()
 
     val professionProperty = SimpleObjectProperty<Profession>(null)
-    val profession: Profession by delegateTo(professionProperty)
+    var profession: Profession? by delegateTo(professionProperty)
 
     val directoryProperty = SimpleObjectProperty<File>(null)
     var directory: File? by delegateTo(directoryProperty)
@@ -38,8 +33,13 @@ object MainModel {
     }
 
     fun reload() {
+        profession = null
         if (Main.Save == null)
             return
+
+        profession = Main.Save!!.player.character.profession
+        StatValueFactory.putAll(stats)
+        SkillValueFactory.putAll(skills)
 
         Main.Save!!.file.parentFile!!.also { newDir ->
             if (directory?.absolutePath != newDir.absolutePath) {
@@ -50,9 +50,6 @@ object MainModel {
             }
             directory = newDir
         }
-
-        StatValueFactory.putAll(stats)
-        SkillValueFactory.putAll(skills)
     }
 
 

@@ -1,11 +1,9 @@
 package controllers.tabs
 
-import content.Profession
 import controllers.MainController
 import controllers.editors.EditorContainerController
 import javafx.application.Platform
 import javafx.scene.Node
-import javafx.scene.control.TableCell
 import javafx.scene.control.TableColumn
 import javafx.scene.control.TableRow
 import javafx.scene.control.TableView
@@ -53,18 +51,22 @@ class SkillTabController {
         active.setCellValueFactory { cell -> cell.value.activeTrainingProperty }
         advancementLevel.setCellValueFactory { cell -> cell.value.advancementLevelProperty }
         advancementDice.setCellValueFactory { cell ->
-            // TODO: Profession change binding
-            stringBindingOf(cell.value.advancementLevelProperty, cell.value.levelProperty) {
-                "[+${cell.value.underlying.advancementDice(Profession.Ranger)}]"
+            stringBindingOf(
+                cell.value.advancementLevelProperty, cell.value.levelProperty, MainModel.professionProperty
+            ) {
+                if (MainModel.profession != null)
+                    "[+${cell.value.underlying.advancementDice(MainModel.profession!!)}]"
+                else ""
             }
         }
         max.setCellValueFactory { cell ->
-            // TODO: Profession change binding
-            stringBindingOf(cell.value.levelProperty, cell.value.advancementLevelProperty, cell.value.isAvailableProperty) {
-                if (cell.value.isAvailable)
-                    cell.value.underlying.maxLevel(Profession.Ranger).toDisplayString()
-                else
-                    ""
+            stringBindingOf(
+                cell.value.levelProperty, cell.value.advancementLevelProperty, cell.value.isAvailableProperty,
+                MainModel.professionProperty
+            ) {
+                if (cell.value.isAvailable && MainModel.profession != null)
+                    cell.value.underlying.maxLevel(MainModel.profession!!).toDisplayString()
+                else ""
             }
         }
 
