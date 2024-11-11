@@ -50,7 +50,9 @@ class MainController {
                 )
             }
         }
-        Main.Save = fileChooser.showOpenDialog(mainScene.window)?.let { SaveFileModel(it) }
+        fileChooser.showOpenDialog(mainScene.window)?.let {
+            Main.Save = SaveFileModel(it)
+        }
     }
 
     fun save() {
