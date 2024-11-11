@@ -42,14 +42,29 @@ object SkillAdvancement {
 
 
     init {
+        /** Fighter **/
         add(Profession.Fighter, mapOf(
             Dice.`1d3` to setOf(
                 Alertness, Archery, BridgeBuilding, Courage, DetectTraps, DisarmTraps, FindWeakness,
                 Fletchery, FoodPreservation, Haggling, Herbalism, Listening, Metallurgy, Mining,
                 Survival, Swimming, Tactics, Woodcraft
-            )
+            ),
+            Dice.`1d5` to setOf(Climbing, Dodge, FirstAid, Healing, Smithing),
+            Dice.`2d4` to setOf(Athletics, TwoWeaponCombat)
         ))
 
+        /** Paladin **/
+        add(Profession.Paladin, mapOf(
+            Dice.`1d3` to setOf(
+                Alchemy, Archery, BridgeBuilding, DetectTraps, DisarmTraps, Dodge, FindWeakness,
+                FoodPreservation, Haggling, Listening, Literacy, Music, Survival, Swimming, Tactics,
+                TwoWeaponCombat
+            ),
+            Dice.`1d5` to setOf(Alertness, Climbing, Courage, FirstAid, Healing, Law, Metallurgy, Smithing),
+            Dice.`2d4` to setOf(Athletics, Concentration)
+        ))
+
+        /** Ranger **/
         add(Profession.Ranger, mapOf(
             Dice.`1d3` to setOf(
                 Archery, Backstabbing, BridgeBuilding, Concentration,
