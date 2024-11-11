@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.VBox?>
-
 <Tab text="Checksums" fx:id="checksumTab" xmlns:fx="http://javafx.com/fxml/1"
      fx:controller="controllers.tabs.ChecksumTabController"
      onSelectionChanged="#handleSelectionChange"
 >
+  <tooltip>
+    <Tooltip text="Checksums are the results of a mathematical calculation based on the data present in the save file,
+which ADOM uses to detect changes in save file data. MASE re-calculates the checksums on every modification, and
+updates them in the file when changes are saved." />
+  </tooltip>
   <VBox prefHeight="200.0" prefWidth="100.0">
-    <Label
-      text="Checksums are mathematical calculation results that ADOM uses to detect changes in save file data. Any change, no matter how small, will also change the checksums."
-      wrapText="true"
-    />
     <TableView fx:id="checksumTable" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
       <columns>
         <TableColumn fx:id="num" styleClass="numeric" sortable="false" />

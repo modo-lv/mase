@@ -17,11 +17,13 @@ class Main : Application() {
                 }
             }
             minWidth = 640.0
+            width = minWidth
             minHeight = 480.0
-            if (parameters.raw.isNotEmpty()) {
-                Save = SaveFileModel(file = File(parameters.raw[0]))
-            }
+            height = minHeight
             show()
+        }
+        if (parameters.raw.isNotEmpty()) {
+            Save = SaveFileModel(file = File(parameters.raw[0]))
         }
     }
 

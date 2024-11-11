@@ -50,16 +50,20 @@ class MainController {
     }
 
     fun saveChanged() {
+        Main.Stage.title = "MASE"
         Main.Save?.also { save ->
             saveSelector.apply { selectionModel.select(items.indexOfFirst { it.file == save.file }) }
+            Main.Stage.title = "${save.file.name} - MASE"
         }
     }
 
     fun switchSave(newFile: File) {
-        if (Main.Save!!.file != newFile) {
-            var confirmed = true
-            if (Main.Save!!.apply { computeChecksums() }.checksumSegments.any { it.isMismatched() }) {
-                confirmed = Alert(
+        if (Main.Save?.file != newFile) {
+            var doSwitch = true
+            val changes =
+                Main.Save?.apply { computeChecksums() }?.checksumSegments?.any { it.isMismatched() } == true
+            if (changes) {
+                doSwitch = Alert(
                     Alert.AlertType.WARNING,
                     "Unsaved changes will be discarded if you switch to another save!",
                     ButtonType.OK, ButtonType.CANCEL
@@ -69,7 +73,7 @@ class MainController {
                 }
             }
 
-            if (confirmed)
+            if (doSwitch)
                 Main.Save = SaveFileModel(newFile)
             else saveChanged() // Save hasn't changed, but this will reset any save-related selections
         }
@@ -103,7 +107,7 @@ class MainController {
     companion object {
         fun openEditor(table: TableView<*>, controller: Any) {
             Stage(StageStyle.UTILITY).apply {
-                scene = FXMLLoader(javaClass.getResource("/gui/editor.fxml")).run {
+                scene = FXMLLoader(javaClass.getResource("/gui/editor-window.fxml")).run {
                     setController(controller)
                     load<Scene>().apply {
                         stylesheets.add("/gui/style.css")

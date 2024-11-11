@@ -31,7 +31,9 @@
       <Button onAction="#open" text="Open..." />
       <Separator orientation="VERTICAL" />
     </ToolBar>
-    <ComboBox fx:id="saveSelector" disable="true" />
+    <HBox styleClass="bigger" >
+      <ComboBox fx:id="saveSelector" disable="true" prefWidth="999999999" HBox.hgrow="ALWAYS" />
+    </HBox>
     <TabPane fx:id="mainTabs" disable="true" tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
       <fx:include source="tabs/character-tab.fxml" />
       <fx:include source="tabs/skill-tab.fxml" />

@@ -22,12 +22,12 @@ class EditorContainerController<T : ValueModel>(val model: T) {
 
         val loader = when (model) {
             is GameValue<*> ->
-                FXMLLoader(javaClass.getResource("/gui/editors/single-number.fxml")).apply {
+                FXMLLoader(javaClass.getResource("/gui/editors/value-editor.fxml")).apply {
                     @Suppress("UNCHECKED_CAST")
                     this.setController(SingleNumberEditorController(model as GameValue<Number>))
                 }
             is SkillValue ->
-                FXMLLoader(javaClass.getResource("/gui/editors/skill.fxml")).apply {
+                FXMLLoader(javaClass.getResource("/gui/editors/skill-editor.fxml")).apply {
                     this.setController(SkillEditorController(model))
                 }
 

@@ -3,7 +3,12 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.VBox?>
 
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.text.TextFlow?>
 <Tab text="Skills" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.tabs.SkillTabController">
+  <tooltip>
+    <Tooltip text="View and edit character's skills, including their advancement and training levels." />
+  </tooltip>
   <ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="200.0" prefWidth="200.0">
     <VBox>
       <TableView fx:id="skillTable" VBox.vgrow="ALWAYS">
@@ -12,6 +17,7 @@
                        prefWidth="${skillTable.width * 0.20}" />
           <TableColumn reorderable="false" sortable="false" text="Lvl." fx:id="level"
                        prefWidth="${skillTable.width * 0.05}" styleClass="numeric" />
+          <TableColumn fx:id="max" reorderable="false" sortable="false" text="Max" styleClass="numeric, computed" />
           <TableColumn reorderable="false" sortable="false" text="Advancement">
             <columns>
               <TableColumn reorderable="false" sortable="false" text="Level" styleClass="numeric"
@@ -20,7 +26,6 @@
                            fx:id="advancementDice" />
             </columns>
           </TableColumn>
-          <TableColumn reorderable="false" sortable="false" text="Max" fx:id="max" styleClass="numeric, computed" />
           <TableColumn text="Training">
             <columns>
               <TableColumn reorderable="false" sortable="false" text="Passive" fx:id="inactive"
