@@ -4,6 +4,7 @@ import content.Profession
 import content.Skill
 import content.Skill.*
 import models.PlayerSkill
+import javax.swing.plaf.metal.MetalBorders.PaletteBorder
 
 typealias SkillMinimums = Map<Skill, Dice>
 
@@ -42,6 +43,8 @@ object SkillAdvancement {
 
 
     init {
+        // Most skills for most professions have a minimum "die" of just +1. The rest are listed below.
+
         /** Fighter **/
         add(Profession.Fighter, mapOf(
             Dice.`1d3` to setOf(
@@ -77,6 +80,24 @@ object SkillAdvancement {
                 Athletics, Climbing, DetectTraps, FoodPreservation,
                 Herbalism, Listening, Survival, TwoWeaponCombat, Woodcraft
             )
+        ))
+
+        /** Wizard **/
+        add(Profession.Wizard, mapOf(
+            Dice.`1d3` to setOf(
+                Alertness, Athletics, BridgeBuilding, Climbing, Cooking, DetectTraps, DisarmTraps,
+                FindWeakness, FirstAid, Gardening, Haggling, Healing, Music, PickLocks, PickPockets, Stealth,
+                Ventriloquism
+            ),
+            Dice.`1d5` to setOf(FoodPreservation, Gemology, Listening, Metallurgy, Necromancy),
+            Dice.`2d4` to setOf(Alchemy, Concentration, Herbalism, Literacy)
+        ))
+
+        /** Mindcrafter **/
+        add(Profession.Mindcrafter, mapOf(
+            Dice.`1d3` to setOf(BridgeBuilding, Swimming, Ventriloquism),
+            Dice.`1d5` to setOf(Gemology, Haggling, Listening),
+            Dice.`2d4` to setOf(Alertness, Concentration, Literacy)
         ))
     }
 
