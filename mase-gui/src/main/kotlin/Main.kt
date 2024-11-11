@@ -9,7 +9,7 @@ import java.io.File
 
 class Main : Application() {
     override fun start(stage: Stage) {
-        stage.apply {
+        Stage = stage.apply {
             scene = FXMLLoader().run {
                 location = javaClass.getResource("/gui/main.fxml")
                 load<Scene>().apply {
@@ -28,6 +28,7 @@ class Main : Application() {
     companion object {
         val SaveProperty = SimpleObjectProperty<SaveFileModel>(null)
         var Save: SaveFileModel? by delegateTo(SaveProperty)
+        lateinit var Stage: Stage
     }
 }
 

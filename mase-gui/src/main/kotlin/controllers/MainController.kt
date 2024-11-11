@@ -1,7 +1,6 @@
 package controllers
 
 import Main
-import javafx.application.Platform
 import javafx.fxml.FXMLLoader
 import javafx.scene.Scene
 import javafx.scene.control.*
@@ -39,22 +38,41 @@ class MainController {
             disableProperty().bind(booleanBindingOf(MainModel.saveList) {
                 MainModel.saveList.isEmpty()
             })
-            selectionModel.selectedItemProperty().addListener { _, _, new ->
-                if (Main.Save!!.file.absolutePath != new.file.absolutePath)
-                    Main.Save = SaveFileModel(new.file)
-            }
+            selectionModel.selectedItemProperty().addListener { _, _, new -> switchSave(new.file) }
         }
 
-        Main.SaveProperty.addListener { _, _, _ ->
-            Main.Save?.also { save ->
-                saveSelector.apply { selectionModel.select(items.indexOfFirst { it.file == save.file }) }
-            }
-        }
+        Main.SaveProperty.addListener { _, _, _ -> saveChanged() }
 
         mainTabs.disableProperty().bind(Main.SaveProperty.isNull)
 
         footer.disableProperty().bind(Main.SaveProperty.isNull)
         footerFileName.textProperty().bind(Main.SaveProperty.stringBindingBy { it?.file?.absolutePath ?: "" })
+    }
+
+    fun saveChanged() {
+        Main.Save?.also { save ->
+            saveSelector.apply { selectionModel.select(items.indexOfFirst { it.file == save.file }) }
+        }
+    }
+
+    fun switchSave(newFile: File) {
+        if (Main.Save!!.file != newFile) {
+            var confirmed = true
+            if (Main.Save!!.apply { computeChecksums() }.checksumSegments.any { it.isMismatched() }) {
+                confirmed = Alert(
+                    Alert.AlertType.WARNING,
+                    "Unsaved changes will be discarded if you switch to another save!",
+                    ButtonType.OK, ButtonType.CANCEL
+                ).run {
+                    showAndWait()
+                    result == ButtonType.OK
+                }
+            }
+
+            if (confirmed)
+                Main.Save = SaveFileModel(newFile)
+            else saveChanged() // Save hasn't changed, but this will reset any save-related selections
+        }
     }
 
     fun open() {
@@ -68,9 +86,7 @@ class MainController {
                 )
             }
         }
-        fileChooser.showOpenDialog(mainScene.window)?.let {
-            Main.Save = SaveFileModel(it)
-        }
+        fileChooser.showOpenDialog(mainScene.window)?.also(::switchSave)
     }
 
     fun save() {
@@ -94,6 +110,7 @@ class MainController {
                     }
                 }
                 initModality(Modality.APPLICATION_MODAL)
+                initOwner(Main.Stage)
                 showAndWait()
                 table.selectionModel.selectedIndex.also {
                     MainModel.reload()

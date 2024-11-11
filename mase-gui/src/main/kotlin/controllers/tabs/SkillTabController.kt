@@ -69,11 +69,6 @@ class SkillTabController {
                 else ""
             }
         }
-
-        Platform.runLater {
-            val x = skillTable.find<Node>(".table-cell.computed")
-            println(x)
-        }
     }
 
     private fun openEditor(item: SkillValue) {
