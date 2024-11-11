@@ -31,7 +31,7 @@
       <Button onAction="#open" text="Open..." />
       <Separator orientation="VERTICAL" />
     </ToolBar>
-    <Label fx:id="signature" styleClass="padded" text="Name, a gender race profession" />
+    <ComboBox fx:id="saveSelector" disable="true" />
     <TabPane fx:id="mainTabs" disable="true" tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
       <fx:include source="tabs/character-tab.fxml" />
       <fx:include source="tabs/skill-tab.fxml" />

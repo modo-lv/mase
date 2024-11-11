@@ -18,6 +18,9 @@ class Main : Application() {
             }
             minWidth = 640.0
             minHeight = 480.0
+            if (parameters.raw.isNotEmpty()) {
+                Save = SaveFileModel(file = File(parameters.raw[0]))
+            }
             show()
         }
     }
@@ -29,7 +32,5 @@ class Main : Application() {
 }
 
 fun main(vararg args: String) {
-    if (args.isNotEmpty())
-        Main.Save = SaveFileModel(file = File(args[0]))
     Application.launch(Main::class.java, *args)
 }

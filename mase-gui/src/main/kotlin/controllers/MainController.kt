@@ -1,9 +1,8 @@
 package controllers
 
 import Main
+import javafx.application.Platform
 import javafx.fxml.FXMLLoader
-import models.MainModel
-import models.SaveFileModel
 import javafx.scene.Scene
 import javafx.scene.control.*
 import javafx.scene.layout.HBox
@@ -12,15 +11,19 @@ import javafx.stage.FileChooser.ExtensionFilter
 import javafx.stage.Modality
 import javafx.stage.Stage
 import javafx.stage.StageStyle
+import ktfx.bindings.booleanBindingOf
 import ktfx.bindings.stringBindingBy
+import models.MainModel
+import models.SaveFileModel
 import utils.Adom
+import java.io.File
 
 class MainController {
     lateinit var mainScene: Scene
     lateinit var saveMenuItem: MenuItem
     lateinit var closeMenuItem: MenuItem
     lateinit var mainTabs: TabPane
-    lateinit var signature: Label
+    lateinit var saveSelector: ComboBox<MainModel.SaveGame>
     lateinit var footer: HBox
     lateinit var footerFileName: TextField
 
@@ -31,7 +34,22 @@ class MainController {
         saveMenuItem.disableProperty().bind(Main.SaveProperty.isNull)
         closeMenuItem.disableProperty().bind(Main.SaveProperty.isNull)
 
-        signature.textProperty().bind(MainModel.signature)
+        saveSelector.apply {
+            items = MainModel.saveListProperty
+            disableProperty().bind(booleanBindingOf(MainModel.saveList) {
+                MainModel.saveList.isEmpty()
+            })
+            selectionModel.selectedItemProperty().addListener { _, _, new ->
+                if (Main.Save!!.file.absolutePath != new.file.absolutePath)
+                    Main.Save = SaveFileModel(new.file)
+            }
+        }
+
+        Main.SaveProperty.addListener { _, _, _ ->
+            Main.Save?.also { save ->
+                saveSelector.apply { selectionModel.select(items.indexOfFirst { it.file == save.file }) }
+            }
+        }
 
         mainTabs.disableProperty().bind(Main.SaveProperty.isNull)
 
