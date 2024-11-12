@@ -2,17 +2,13 @@ package controllers.tabs
 
 import controllers.MainController
 import controllers.editors.EditorContainerController
-import javafx.application.Platform
-import javafx.scene.Node
 import javafx.scene.control.TableColumn
 import javafx.scene.control.TableRow
 import javafx.scene.control.TableView
 import javafx.scene.input.KeyCode
-import ktfx.bindings.stringBindingOf
-import ktfx.controls.find
 import models.MainModel
+import models.factories.SkillValueFactory
 import models.values.SkillValue
-import utils.toDisplayString
 
 class SkillTabController {
     lateinit var skillTable: TableView<SkillValue>
@@ -50,25 +46,8 @@ class SkillTabController {
         inactive.setCellValueFactory { cell -> cell.value.inactiveTrainingProperty }
         active.setCellValueFactory { cell -> cell.value.activeTrainingProperty }
         advancementLevel.setCellValueFactory { cell -> cell.value.advancementLevelProperty }
-        advancementDice.setCellValueFactory { cell ->
-            stringBindingOf(
-                cell.value.advancementLevelProperty, cell.value.levelProperty, MainModel.professionProperty
-            ) {
-                if (MainModel.profession != null)
-                    "[+${cell.value.underlying.advancementDice(MainModel.profession!!)}]"
-                else ""
-            }
-        }
-        max.setCellValueFactory { cell ->
-            stringBindingOf(
-                cell.value.levelProperty, cell.value.advancementLevelProperty, cell.value.isAvailableProperty,
-                MainModel.professionProperty
-            ) {
-                if (cell.value.isAvailable && MainModel.profession != null)
-                    cell.value.underlying.maxLevel(MainModel.profession!!).toDisplayString()
-                else ""
-            }
-        }
+        advancementDice.setCellValueFactory { cell -> SkillValueFactory.advancementDiceBinding(cell.value) }
+        max.setCellValueFactory { cell -> SkillValueFactory.advancementMaxBinding(cell.value) }
     }
 
     private fun openEditor(item: SkillValue) {

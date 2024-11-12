@@ -1,35 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ButtonBar?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Region?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
-<?import javafx.scene.Scene?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<?import javafx.scene.layout.Pane?>
-<?import javafx.scene.layout.StackPane?>
-<Scene xmlns:fx="http://javafx.com/fxml/1" fx:id="editorScene">
+<Scene fx:id="editorScene" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/17.0.2-ea">
   <VBox alignment="BOTTOM_RIGHT" stylesheets="@style.css" xmlns="http://javafx.com/javafx/23.0.1">
-    <HBox styleClass="padded">
-      <Label text="&lt;stat&gt;" fx:id="statLabel">
+    <HBox styleClass="padded" minHeight="50">
+      <Label fx:id="statLabel" text="&lt;stat&gt;">
         <font>
           <Font size="24.0" />
         </font>
       </Label>
     </HBox>
-    <StackPane fx:id="region" />
+    <Separator />
+    <StackPane fx:id="region" styleClass="padded" VBox.vgrow="ALWAYS" />
+    <Separator />
     <ButtonBar styleClass="padded">
       <buttons>
-        <Button cancelButton="true" text="Cancel" onAction="#cancel" />
-        <Button defaultButton="true" text="OK" onAction="#ok" />
+        <Button cancelButton="true" onAction="#cancel" text="Cancel" />
+        <Button defaultButton="true" onAction="#ok" text="OK" />
       </buttons>
-      <opaqueInsets>
-        <Insets />
-      </opaqueInsets>
     </ButtonBar>
   </VBox>
 </Scene>

@@ -7,6 +7,7 @@ class NumericSpinnerValueFactory(
     val min: Long = Long.MIN_VALUE,
     val max: Long = Long.MAX_VALUE,
 ) : SpinnerValueFactory<Number>() {
+    constructor(min: Byte, max: Byte) : this(min.toLong(), max.toLong())
     constructor(min: Short, max: Short) : this(min.toLong(), max.toLong())
     constructor(min: Int, max: Int) : this(min.toLong(), max.toLong())
 

@@ -4,7 +4,6 @@ import content.Profession
 import content.Skill
 import content.Skill.*
 import models.PlayerSkill
-import javax.swing.plaf.metal.MetalBorders.PaletteBorder
 
 typealias SkillMinimums = Map<Skill, Dice>
 
@@ -40,6 +39,23 @@ object SkillAdvancement {
         val actual = Schedule.indexOf(Dice.`2d4`) - (skill.level / 10) + skill.advancement
         return Schedule[actual.coerceIn(minimum .. Schedule.lastIndex)]
     }
+
+    /**
+     * The base max value is
+     * [PlayerSkill.level] + [PlayerSkill.activeTraining] + [PlayerSkill.inactiveTraining].
+     *
+     * However, during level-up, active training is temporarily increased by
+     * `(max(diceRoll, diceRoll) / 2) + random(0..3)`
+     * (according to http://www.it-is-law.com/adom/index.php?title=Skills),
+     * so the actual max value is not exactly predictable.
+     */
+    fun maxLevel(profession: Profession, skill: PlayerSkill): IntRange =
+        skill.run {
+            val die = computeDice(profession, skill)
+            val min = ((level + activeTraining + inactiveTraining) + die.min).coerceIn(level.toInt(), 100)
+            val max = ((level + activeTraining + inactiveTraining) + die.max + 3).coerceIn(min, 100)
+            min .. max
+        }
 
 
     init {

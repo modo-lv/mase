@@ -1,6 +1,8 @@
 package models.values
 
 import SaveData
+import components.SkillAdvancement
+import content.Profession
 import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleObjectProperty
 import javafx.beans.property.SimpleStringProperty
@@ -33,6 +35,21 @@ class SkillValue(
 
     val isAvailableProperty = SimpleBooleanProperty(underlying.isAvailable)
     val isAvailable: Boolean by delegateTo(isAvailableProperty)
+
+    fun toPlayerSkill() = PlayerSkill(
+        type = underlying.type,
+        state = state,
+        level = level,
+        advancement = advancementLevel,
+        activeTraining = activeTraining,
+        inactiveTraining = inactiveTraining,
+    )
+
+    fun advancementDice(profession: Profession) =
+        SkillAdvancement.computeDice(profession, this.toPlayerSkill())
+
+    fun maxLevel(profession: Profession): IntRange =
+        SkillAdvancement.maxLevel(profession, this.toPlayerSkill())
 
     override fun commit() {
         underlying.state = state

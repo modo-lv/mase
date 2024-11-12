@@ -2,20 +2,50 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-
-<HBox alignment="CENTER" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/17.0.2-ea"
-      xmlns:fx="http://javafx.com/fxml/1">
+<?import controls.MaseSpinner?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.text.TextFlow?>
+<FlowPane alignment="CENTER" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/17.0.2-ea"
+          xmlns:fx="http://javafx.com/fxml/1" styleClass="skill-editor" vgap="20" minHeight="150"
+          prefHeight="${minHeight}" orientation="VERTICAL"
+          fx:id="skillEditor"
+>
   <fx:define>
     <ToggleGroup fx:id="state" />
   </fx:define>
 
-  <VBox>
-    <RadioButton text="_Available" toggleGroup="${state}" fx:id="stateAvailable" />
-    <RadioButton text="_Not available" toggleGroup="${state}" fx:id="stateNotAvailable" />
-  </VBox>
+  <FlowPane alignment="CENTER" hgap="10">
+    <RadioButton text="[_Y] Available" toggleGroup="${state}" fx:id="stateAvailable" />
+    <RadioButton text="[_N] Not available" toggleGroup="${state}" fx:id="stateNotAvailable" />
+  </FlowPane>
 
-  <Spinner fx:id="level" editable="true" />
-  <Spinner fx:id="practical" editable="true" />
-  <Spinner fx:id="theoretical" editable="true" />
-  <Spinner fx:id="marks" editable="true" />
-</HBox>
+  <FlowPane fx:id="spinners" alignment="CENTER" hgap="10">
+    <VBox alignment="CENTER">
+      <Label text="[_L] Level" mnemonicParsing="true" labelFor="${level}" />
+      <MaseSpinner fx:id="level" editable="true" styleClass="byte" />
+    </VBox>
+    <VBox alignment="CENTER">
+      <Label text="[_A] Adv. level" mnemonicParsing="true" labelFor="${advancement}" />
+      <MaseSpinner fx:id="advancement" editable="true" styleClass="byte" />
+    </VBox>
+    <VBox alignment="CENTER">
+      <Label text="[_T] Active training" mnemonicParsing="true" labelFor="${active}" />
+      <MaseSpinner fx:id="active" editable="true" styleClass="short" />
+    </VBox>
+    <VBox alignment="CENTER">
+      <Label text="[_I] Inactive training" mnemonicParsing="true" labelFor="${inactive}" />
+      <MaseSpinner fx:id="inactive" editable="true" styleClass="short" />
+    </VBox>
+  </FlowPane>
+
+  <HBox fx:id="computed">
+    <TextFlow HBox.hgrow="ALWAYS" textAlignment="CENTER">
+      <Text text="Advancement dice: "/>
+      <Text fx:id="dice" />
+    </TextFlow>
+    <TextFlow HBox.hgrow="ALWAYS" textAlignment="CENTER">
+      <Text text="Limit at level-up: " />
+      <Text fx:id="max" />
+    </TextFlow>
+  </HBox>
+</FlowPane>

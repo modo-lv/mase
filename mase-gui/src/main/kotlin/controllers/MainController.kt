@@ -10,11 +10,13 @@ import javafx.stage.FileChooser.ExtensionFilter
 import javafx.stage.Modality
 import javafx.stage.Stage
 import javafx.stage.StageStyle
+import javafx.stage.WindowEvent
 import ktfx.bindings.booleanBindingOf
 import ktfx.bindings.stringBindingBy
 import models.MainModel
 import models.SaveFileModel
 import utils.Adom
+import java.beans.EventHandler
 import java.io.File
 
 class MainController {
@@ -115,6 +117,12 @@ class MainController {
                 }
                 initModality(Modality.APPLICATION_MODAL)
                 initOwner(Main.Stage)
+                setOnShown {
+                    (it.target as? Stage)?.apply {
+                        minHeight = height
+                        minWidth = width
+                    }
+                }
                 showAndWait()
                 table.selectionModel.selectedIndex.also {
                     MainModel.reload()

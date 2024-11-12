@@ -2,8 +2,11 @@ package models.factories
 
 import Main
 import javafx.collections.ObservableList
+import ktfx.bindings.stringBindingOf
+import models.MainModel
 import models.PlayerSkill
 import models.values.SkillValue
+import utils.toDisplayString
 
 object SkillValueFactory {
     /**
@@ -24,4 +27,27 @@ object SkillValueFactory {
                 )
             }
     }
+
+    /**
+     * Binding for displaying skill advancement dice for a skill value.
+     */
+    fun advancementDiceBinding(skill: SkillValue) =
+        stringBindingOf(
+            skill.advancementLevelProperty, skill.levelProperty, MainModel.professionProperty
+        ) {
+            if (MainModel.profession != null)
+                "[+${skill.advancementDice(MainModel.profession!!)}]"
+            else ""
+        }
+
+    fun advancementMaxBinding(skill: SkillValue) =
+        stringBindingOf(
+            skill.levelProperty, skill.advancementLevelProperty, skill.isAvailableProperty,
+            skill.activeTrainingProperty, skill.inactiveTrainingProperty,
+            MainModel.professionProperty
+        ) {
+            if (skill.isAvailable && MainModel.profession != null)
+                skill.maxLevel(MainModel.profession!!).toDisplayString()
+            else ""
+        }
 }

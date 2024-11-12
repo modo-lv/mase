@@ -22,13 +22,34 @@
     -fx-font-weight: bold;
 }
 
+.spinner.byte {
+    -fx-pref-width: 5em;
+}
+
+#skillEditor #spinners Label {
+    -fx-padding: 0 0 3pt 0;
+}
+
+.spinner.short {
+    -fx-pref-width: 7em;
+}
+
 .unavailable .table-cell {
     -fx-background-color: rgba(0,0,0,0.25)
 }
 
-.tabIntro Text {
+.mnemonic-underline {
+    /* Mnemonic underline always visible */
+    -fx-stroke: -fx-text-base-color;
+}
+
+Text {
     /* Make text font look the same as label font */
     -fx-fill: -fx-text-background-color;
+
+}
+Text:disabled {
+    -fx-opacity: 0.45;
 }
 
 .table-column.numeric {
